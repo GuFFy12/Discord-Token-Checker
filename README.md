@@ -1,7 +1,9 @@
 # Discord-Token-Checker
 Check and write all account info + Check nitro on account
 Py and JS editions
+
 https://github.com/ES-Nighty/Discord-Token-Checker (Check valid tokens)
+
 https://github.com/Dropout1337/Discord-Nitro-Purchaser (Method to check nitro and payments on account)
 
 Python:

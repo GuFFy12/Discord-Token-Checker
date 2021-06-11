@@ -1,6 +1,6 @@
 # Discord-Token-Checker
 Check and write all account info + Check nitro on account
-Py and JS editions
+Py and JS (mb soon) editions
 
 https://github.com/ES-Nighty/Discord-Token-Checker (Check valid tokens)
 

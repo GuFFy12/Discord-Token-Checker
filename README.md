@@ -5,7 +5,7 @@ JS EDITION: https://github.com/amfero/DiscordTokenChecker (I will contribute her
 
 TS EDITION: https://github.com/cattyngmd/DiscordTokenChecker-ts
 
-PY EDITION (Cant chech nitro and payment information + dont delete duplicates):
+PY EDITION (does not remove duplicates):
 
 Output data:
 

@@ -3,7 +3,7 @@ Check and write all account info + Check nitro on account
 
 JS EDITION: https://github.com/amfero/DiscordTokenChecker
 
-TS EDITION: https://github.com/cattyn/DiscordTokenChecker
+TS EDITION: https://github.com/cattyngmd/DiscordTokenChecker-ts
 
 PY EDITION (Cant chech nitro and payment information + dont delete duplicates):
 

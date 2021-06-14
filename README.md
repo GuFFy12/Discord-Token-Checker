@@ -1,7 +1,7 @@
 # Discord-Token-Checker
 Check and write all account info + Check nitro on account
 
-JS EDITION: https://github.com/amfero/DiscordTokenChecker
+JS EDITION: https://github.com/amfero/DiscordTokenChecker (I will contribute here (Py is 🤢))
 
 TS EDITION: https://github.com/cattyngmd/DiscordTokenChecker-ts
 

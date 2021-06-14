@@ -12,6 +12,6 @@ Output data:
 Token.rat Nitro: {Nitro or Classic or No} Billing: {Valid or Invalid or No} Username: lol#1337 Language: ru Email: mamont@gmail.com Phone: +88005553535 2fa: {Yes or No}
 
 ![cmd_bpkQFCeCIj](https://user-images.githubusercontent.com/49491499/121934641-01c2d680-cd61-11eb-9c75-1b312bd87081.png)
-![cmd_Zyn9tGIEHj](https://user-images.githubusercontent.com/49491499/121754523-4d416e80-cb2e-11eb-85ee-23cf5def06b2.png)
+![image](https://user-images.githubusercontent.com/49491499/121957372-bc5fd280-cd7b-11eb-8ac9-1bd8beb051b1.png)
 
 https://github.com/ES-Nighty/Discord-Token-Checker (Check valid tokens)

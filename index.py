@@ -1,5 +1,6 @@
 import requests, colorama, os, ctypes
 from colorama import Fore, init
+from sys import exit
 
 init()
 
@@ -71,18 +72,17 @@ def get_payment_id(token: str):
 
 def CheckToken(token):
     if len(token) > 59:
-        lenght = "2fa: Yes"
+        lenght = " 2fa: Yes"
+        lenghtToken = f"{token}                             "
     else:
-        lenght = "2fa: No"
+        lenght = " 2fa: No"
+        lenghtToken = f"{token}"
     req = requests.get("https://discordapp.com/api/v7/users/@me?verified", headers={'authorization': token})
     if req.status_code == 401:
         #Invalid tokens
         with open("Invalid Tokens.txt", "a", encoding='utf-8') as f:
             f.write(token + "\n")
-            if lenght == "2fa: No":
-                print(f"{Fore.WHITE}{token}                                |  {Fore.RED}Invalid")
-            else:
-                print(f"{Fore.WHITE}{token}   |  {Fore.RED}Invalid")
+            print(f"{Fore.WHITE}{lenghtToken}   |  {Fore.RED}Invalid")
     elif req.status_code == 200:
         #Parse data
         json_response = req.json()
@@ -124,27 +124,15 @@ def CheckToken(token):
                 f.write(token + id + nitro + username + discriminator + locale + email + phone + lenght + "\n") 
             if (checkNitro.lower() == "y"):
                 if  ((plan is "Nitro" or plan is "Classic") or (pay is "Valid" or pay is "Invalid")):
-                    if lenght == "2fa: No":
-                        print(f"{Fore.WHITE}{token}                                |  {Fore.MAGENTA}Nitro")
-                    else:
-                         print(f"{Fore.WHITE}{token}   |  {Fore.MAGENTA}Nitro")
+                    print(f"{Fore.WHITE}{lenghtToken}   |  {Fore.MAGENTA}Nitro")
                 else:
-                    if lenght == "2fa: No":
-                        print(f"{Fore.WHITE}{token}                                |  {Fore.GREEN}Valid")
-                    else:
-                        print(f"{Fore.WHITE}{token}   |  {Fore.GREEN}Valid")
+                    print(f"{Fore.WHITE}{lenghtToken}   |  {Fore.GREEN}Valid")
             else:
-                if lenght == "2fa: No":
-                    print(f"{Fore.WHITE}{token}                                |  {Fore.GREEN}Valid")
-                else: 
-                    print(f"{Fore.WHITE}{token}   |  {Fore.GREEN}Valid")
+                print(f"{Fore.WHITE}{lenghtToken}   |  {Fore.GREEN}Valid")
         else:
             with open("Unverified Tokens.txt", "a", encoding='utf-8') as f:
-                f.write(token + id + nitro + username + discriminator + locale + email + phone + lenght + "\n")
-            if lenght == "2fa: No":   
-                print(f"{Fore.WHITE}{token}                                |  {Fore.YELLOW}Unverified")
-            else:
-                 print(f"{Fore.WHITE}{token}   |  {Fore.YELLOW}Unverified")             
+                f.write(token + id + nitro + username + discriminator + locale + email + phone + lenght + "\n")  
+            print(f"{Fore.WHITE}{lenghtToken}   |  {Fore.YELLOW}Unverified")          
     else:
         print("An unexepted error occurred !")
         input(f"{Fore.MAGENTA}Press Enter button for exit")

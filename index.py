@@ -1,4 +1,4 @@
-import requests, colorama, os
+import requests, colorama, os, ctypes
 from colorama import Fore, init
 
 init()
@@ -7,7 +7,7 @@ def doIntro():
     os.system("cls")
 if __name__ == '__main__':
     os.system('cls')
-    os.system('title Discord Token Checker by GuFFy_OwO')
+    ctypes.windll.kernel32.SetConsoleTitleW("Discord Token Checker by GuFFy_OwO")
     colorama.init()
 
 print(f"{Fore.MAGENTA}Discord Token Checker by GuFFy_OwO")
@@ -70,11 +70,19 @@ def get_payment_id(token: str):
             return None
 
 def CheckToken(token):
+    if len(token) > 59:
+        lenght = "2fa: Yes"
+    else:
+        lenght = "2fa: No"
     req = requests.get("https://discordapp.com/api/v7/users/@me?verified", headers={'authorization': token})
     if req.status_code == 401:
         #Invalid tokens
         with open("Invalid Tokens.txt", "a", encoding='utf-8') as f:
             f.write(token + "\n")
+            if lenght == "2fa: No":
+                print(f"{Fore.WHITE}{token}                                |  {Fore.RED}Invalid")
+            else:
+                print(f"{Fore.WHITE}{token}   |  {Fore.RED}Invalid")
     elif req.status_code == 200:
         #Parse data
         json_response = req.json()
@@ -106,17 +114,37 @@ def CheckToken(token):
             nitro = (f" Nitro: {plan} Billing: {pay}")
         else:
             nitro = ""
-        #Write file
+        #Write file (SHIIIT CODE MOMENT)
         if (checkNitro.lower() == "y"):
-            if ((plan is "Nitro" or plan is "Classic") or (pay is "Valid" or pay is "Invalid")) and (checkNitro.lower() == "y"):
+            if ((plan is "Nitro" or plan is "Classic") or (pay is "Valid" or pay is "Invalid")):
                 with open("Nitro Tokens.txt", "a", encoding='utf-8') as f:
-                    f.write(token + nitro + username + discriminator + locale + email + phone + "\n")
+                    f.write(token + nitro + username + discriminator + locale + email + phone + lenght + "\n")
         if verified is not "False":
             with open("Verified Tokens.txt", "a", encoding='utf-8') as f:
-                f.write(token + id + nitro + username + discriminator + locale + email + phone + "\n")
+                f.write(token + id + nitro + username + discriminator + locale + email + phone + lenght + "\n") 
+            if (checkNitro.lower() == "y"):
+                if  ((plan is "Nitro" or plan is "Classic") or (pay is "Valid" or pay is "Invalid")):
+                    if lenght == "2fa: No":
+                        print(f"{Fore.WHITE}{token}                                |  {Fore.MAGENTA}Nitro")
+                    else:
+                         print(f"{Fore.WHITE}{token}   |  {Fore.MAGENTA}Nitro")
+                else:
+                    if lenght == "2fa: No":
+                        print(f"{Fore.WHITE}{token}                                |  {Fore.GREEN}Valid")
+                    else:
+                        print(f"{Fore.WHITE}{token}   |  {Fore.GREEN}Valid")
+            else:
+                if lenght == "2fa: No":
+                    print(f"{Fore.WHITE}{token}                                |  {Fore.GREEN}Valid")
+                else: 
+                    print(f"{Fore.WHITE}{token}   |  {Fore.GREEN}Valid")
         else:
             with open("Unverified Tokens.txt", "a", encoding='utf-8') as f:
-                f.write(token + id + nitro + username + discriminator + locale + email + phone + "\n")              
+                f.write(token + id + nitro + username + discriminator + locale + email + phone + lenght + "\n")
+            if lenght == "2fa: No":   
+                print(f"{Fore.WHITE}{token}                                |  {Fore.YELLOW}Unverified")
+            else:
+                 print(f"{Fore.WHITE}{token}   |  {Fore.YELLOW}Unverified")             
     else:
         print("An unexepted error occurred !")
         input(f"{Fore.MAGENTA}Press Enter button for exit")
@@ -124,13 +152,12 @@ def CheckToken(token):
     println()
 
 def println():
-    os.system('cls')
     verify = sum(1 for line in open("Verified Tokens.txt", 'r', encoding='utf-8'))
     unverify = sum(1 for line in open("Unverified Tokens.txt", 'r', encoding='utf-8'))
     inv = sum(1 for line in open("Invalid Tokens.txt", 'r', encoding='utf-8'))
     if (checkNitro.lower() == "y"):
         nit = sum(1 for line in open("Nitro Tokens.txt", 'r', encoding='utf-8'))
-        print(f"{Fore.CYAN}Checked: {verify + unverify + inv}/{txt} {Fore.WHITE}| {Fore.GREEN}Verify: {verify} {Fore.WHITE}| {Fore.YELLOW}Unverify: {unverify} {Fore.WHITE}| {Fore.RED}Invalid: {inv} {Fore.WHITE}| {Fore.MAGENTA}NITRO: {nit}")
+        ctypes.windll.kernel32.SetConsoleTitleW(f'Discord Token Checker by GuFFy_OwO  |  Checked: {verify + unverify + inv}/{txt}  |  Verified: {verify}  |  Unverified: {unverify}  |  Invalid: {inv}  |  NITRO: {nit}')
     else:
-        print(f"{Fore.CYAN}Checked: {verify + unverify + inv}/{txt} {Fore.WHITE}| {Fore.GREEN}Verify: {verify} {Fore.WHITE}| {Fore.YELLOW}Unverify: {unverify} {Fore.WHITE}| {Fore.RED}Invalid: {inv} {Fore.WHITE}")
+        ctypes.windll.kernel32.SetConsoleTitleW(f'Discord Token Checker by GuFFy_OwO  |  Checked: {verify + unverify + inv}/{txt}  |  Verified: {verify}  |  Unverified: {unverify}  |  Invalid: {inv}')
 main()

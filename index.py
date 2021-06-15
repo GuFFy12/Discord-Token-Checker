@@ -49,7 +49,8 @@ def main():
     if checkNitro.lower() == "y":
         open(dirNitroTokens, 'a+')
     if checkInfo.lower() == "y":
-        open(dirInfoNitroTokens, 'a+')
+        if checkNitro.lower() == "y":
+            open(dirInfoNitroTokens, 'a+')
         open(dirInfoValidTokens, 'a+')
         open(dirInfoUnverifiedTokens, 'a+')
     try:

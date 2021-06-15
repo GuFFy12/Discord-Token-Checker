@@ -5,7 +5,7 @@ JS EDITION: https://github.com/amfero/DiscordTokenChecker (I will contribute her
 
 TS EDITION: https://github.com/cattyngmd/DiscordTokenChecker-ts
 
-PY EDITION (does not remove duplicates):
+PY EDITION: https://github.com/GuFFy12/Discord-Token-Checker
 
 Output data:
 

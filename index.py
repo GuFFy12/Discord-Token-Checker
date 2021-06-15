@@ -14,7 +14,7 @@ if __name__ == '__main__':
 print(f"{Fore.MAGENTA}Discord Token Checker by GuFFy_OwO\n")
 tokenFileName = input(f"{Fore.GREEN}Enter the name of the file in wich are the unchecked tokens (without .txt) : ")
 checkNitro = input(f"{Fore.GREEN}Check nitro and payments on tokens? [Y/N] : ")
-checkInfo = input(f"{Fore.GREEN}Save info about token to line after it? [Y/N] : ")
+checkInfo = input(f"{Fore.GREEN}Create and save info about token to another file? [Y/N] : ")
 if not os.path.exists("./output"):
     os.makedirs("./output")
 if (not os.path.exists(tokenFileName + ".txt")):
@@ -26,11 +26,11 @@ else:
 
 dirValidTokens = "./output/Valid Tokens.txt"
 dirUnverifiedTokens = "./output/Unverified Tokens.txt"
-dirInvalidTokens = "./output/Invalid Tokens.txt"
 dirNitroTokens = "./output/Nitro Tokens.txt"
-dirValidTokensOnly = "./output/Valid Tokens Only.txt"
-dirUnverifiedTokenOnly = "./output/Unverified Token Only.txt"
-dirNitroTokensOnly = "./output/Nitro Tokens Only.txt"
+dirInfoValidTokens = "./output/info_Valid Tokens.txt"
+dirInfoUnverifiedTokens = "./output/info_Unverified Token.txt"
+dirInfoNitroTokens = "./output/info_Nitro Tokens.txt"
+dirInvalidTokens = "./output/Invalid Tokens.txt"
 
 def main():
     doIntro()
@@ -39,9 +39,9 @@ def main():
         os.remove(dirUnverifiedTokens)
         os.remove(dirInvalidTokens)
         os.remove(dirNitroTokens)
-        os.remove(dirValidTokensOnly)
-        os.remove(dirUnverifiedTokenOnly)
-        os.remove(dirNitroTokensOnly)
+        os.remove(dirInfoValidTokens)
+        os.remove(dirInfoUnverifiedTokens)
+        os.remove(dirInfoNitroTokens)
     except: None
     open(dirValidTokens, 'a+')
     open(dirUnverifiedTokens, 'a+')
@@ -49,9 +49,9 @@ def main():
     if checkNitro.lower() == "y":
         open(dirNitroTokens, 'a+')
     if checkInfo.lower() == "y":
-        open(dirNitroTokensOnly, 'a+')
-        open(dirValidTokensOnly, 'a+')
-        open(dirUnverifiedTokenOnly, 'a+')
+        open(dirInfoNitroTokens, 'a+')
+        open(dirInfoValidTokens, 'a+')
+        open(dirInfoUnverifiedTokens, 'a+')
     try:
         for item in open(tokenFileName + ".txt", "r").readlines():
             CheckToken(item.strip())
@@ -135,7 +135,7 @@ def CheckToken(token):
                 with open(dirNitroTokens, "a", encoding='utf-8') as f:
                     if checkInfo.lower() == "y":
                         f.write(token + nitro + username + discriminator + locale + email + phone + lenght + "\n")
-                        with open(dirNitroTokensOnly, "a", encoding='utf-8') as f:
+                        with open(dirInfoNitroTokens, "a", encoding='utf-8') as f:
                             f.write(token + "\n")
                     else: 
                         f.write(token + "\n")
@@ -143,7 +143,7 @@ def CheckToken(token):
             with open(dirValidTokens, "a", encoding='utf-8') as f:
                 if checkInfo.lower() == "y":
                     f.write(token + id + nitro + username + discriminator + locale + email + phone + lenght + "\n")
-                    with open(dirValidTokensOnly, "a", encoding='utf-8') as f:
+                    with open(dirInfoValidTokens, "a", encoding='utf-8') as f:
                         f.write(token + "\n")
                 else: 
                     f.write(token + "\n")
@@ -158,7 +158,7 @@ def CheckToken(token):
             with open(dirUnverifiedTokens, "a", encoding='utf-8') as f:
                 if checkInfo.lower() == "y":
                     f.write(token + id + nitro + username + discriminator + locale + email + phone + lenght + "\n")
-                    with open(dirUnverifiedTokenOnly, "a", encoding='utf-8') as f:
+                    with open(dirInfoUnverifiedTokens, "a", encoding='utf-8') as f:
                         f.write(token + "\n")
                 else:
                     f.write(token + "\n")

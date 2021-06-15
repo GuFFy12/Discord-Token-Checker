@@ -18,6 +18,6 @@ Token.rat Nitro: {Nitro or Classic or No} Billing: {Valid or Invalid or No} User
 ![cmd_bpkQFCeCIj](https://user-images.githubusercontent.com/49491499/121934641-01c2d680-cd61-11eb-9c75-1b312bd87081.png)
 ![image](https://user-images.githubusercontent.com/49491499/121957372-bc5fd280-cd7b-11eb-8ac9-1bd8beb051b1.png)
 
-Disabling nitro checking on valid accounts increases efficiency by ~1.7 times
+Disabling nitro checking on valid accounts increases speed by ~1.7 times
 
 https://github.com/ES-Nighty/Discord-Token-Checker (Check valid tokens)

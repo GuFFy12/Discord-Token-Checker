@@ -24,12 +24,12 @@ if (not os.path.exists(tokenFileName + ".txt")):
 else:
     txt = sum(1 for line in open(tokenFileName + ".txt", 'r'))
 
-dirValidTokens = "./output/Valid Tokens.txt"
-dirUnverifiedTokens = "./output/Unverified Tokens.txt"
-dirNitroTokens = "./output/Nitro Tokens.txt"
-dirInfoValidTokens = "./output/info_Valid Tokens.txt"
-dirInfoUnverifiedTokens = "./output/info_Unverified Token.txt"
-dirInfoNitroTokens = "./output/info_Nitro Tokens.txt"
+dirValidTokens = "./output/info_Valid Tokens.txt"
+dirUnverifiedTokens = "./output/info_Unverified Tokens.txt"
+dirNitroTokens = "./output/info_Nitro Tokens.txt"
+dirInfoValidTokens = "./output/Valid Tokens.txt"
+dirInfoUnverifiedTokens = "./output/Unverified Token.txt"
+dirInfoNitroTokens = "./output/Nitro Tokens.txt"
 dirInvalidTokens = "./output/Invalid Tokens.txt"
 
 def main():
@@ -134,17 +134,17 @@ def CheckToken(token):
             if ((plan is "Nitro" or plan is "Classic") or (pay is "Valid" or pay is "Invalid")):
                 with open(dirNitroTokens, "a", encoding='utf-8') as f:
                     if checkInfo.lower() == "y":
-                        f.write(token + nitro + username + discriminator + locale + email + phone + lenght + "\n")
+                        f.write(token + "\n")
                         with open(dirInfoNitroTokens, "a", encoding='utf-8') as f:
-                            f.write(token + "\n")
+                            f.write(token + nitro + username + discriminator + locale + email + phone + lenght + "\n")
                     else: 
                         f.write(token + "\n")
         if verified is not "False":
             with open(dirValidTokens, "a", encoding='utf-8') as f:
                 if checkInfo.lower() == "y":
-                    f.write(token + id + nitro + username + discriminator + locale + email + phone + lenght + "\n")
+                    f.write(token + "\n")
                     with open(dirInfoValidTokens, "a", encoding='utf-8') as f:
-                        f.write(token + "\n")
+                        f.write(token + id + nitro + username + discriminator + locale + email + phone + lenght + "\n")
                 else: 
                     f.write(token + "\n")
             if checkNitro.lower() == "y":
@@ -157,9 +157,9 @@ def CheckToken(token):
         else:
             with open(dirUnverifiedTokens, "a", encoding='utf-8') as f:
                 if checkInfo.lower() == "y":
-                    f.write(token + id + nitro + username + discriminator + locale + email + phone + lenght + "\n")
+                    f.write(token + "\n")
                     with open(dirInfoUnverifiedTokens, "a", encoding='utf-8') as f:
-                        f.write(token + "\n")
+                        f.write(token + id + nitro + username + discriminator + locale + email + phone + lenght + "\n")
                 else:
                     f.write(token + "\n")
             print(f"{Fore.WHITE}{lenghtToken}   |  {Fore.YELLOW}Unverified")          

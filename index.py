@@ -1,181 +1,80 @@
-import requests, colorama, os, ctypes
-from colorama import Fore, init
+import colorama, os, ctypes, re, glob
+from colorama import Fore
 from sys import exit
 
+def cls():
+    os.system('cls' if os.name=='nt' else 'clear')
 
+def fexit():
+    input(f"\n{Fore.RESET}Press Enter button for exit")
+    exit()
 
 os.system("cls")
-if __name__ == '__main__':
-    os.system('cls')
+if __name__ == "__main__":
+    os.system("cls")
     ctypes.windll.kernel32.SetConsoleTitleW("Discord Token Checker by GuFFy_OwO")
     colorama.init()
 
-print(f"{Fore.MAGENTA}Discord Token Checker by GuFFy_OwO\n")
-tokenFileName = input(f"{Fore.GREEN}Enter the name of the file in wich are the unchecked tokens (without .txt) : ")
-checkNitro = input(f"{Fore.GREEN}Check nitro and payments on tokens? [Y/N] : ")
-checkInfo = input(f"{Fore.GREEN}Create and save info about token to another file? [Y/N] : ")
-if not os.path.exists("./output"):
-    os.makedirs("./output")
-if (not os.path.exists(tokenFileName + ".txt")):
-    print(tokenFileName + ".txt" + " not exist.")
-    input(f"{Fore.MAGENTA}Press Enter button for exit")
-    exit()
-else:
-    txt = sum(1 for line in open(tokenFileName + ".txt", 'r'))
+print(f"{Fore.RESET}[{Fore.CYAN}1{Fore.RESET}] Check one file")
+print(f"{Fore.RESET}[{Fore.CYAN}2{Fore.RESET}] Check many files")
+print()
 
-dirValidTokens = "./output/Valid Tokens.txt"
-dirUnverifiedTokens = "./output/Unverified Tokens.txt"
-dirNitroTokens = "./output/Nitro Tokens.txt"
-dirInfoValidTokens = "./output/info_Valid Tokens.txt"
-dirInfoUnverifiedTokens = "./output/info_Unverified Token.txt"
-dirInfoNitroTokens = "./output/info_Nitro Tokens.txt"
-dirInvalidTokens = "./output/Invalid Tokens.txt"
+checktype = input(f"{Fore.CYAN}>{Fore.RESET} Select An Option{Fore.CYAN}:{Fore.RESET} ")
+if "1" in checktype:
+    cls()
+    tokenFileName = input(f"{Fore.CYAN}>{Fore.RESET}Enter the name of the file in wich are the unparsed tokens{Fore.CYAN}:{Fore.RESET} ")
+elif "2" in checktype:
+    cls()
+    tokenDirectoryName = input(f"{Fore.CYAN}>{Fore.RESET}Enter the directory of the files in wich are the unparsed tokens{Fore.CYAN}:{Fore.RESET} ")
+    if not os.path.exists(tokenDirectoryName):
+        print(tokenDirectoryName + " directory not exist.")
+        fexit()
+
+else:
+    print("Invalid Option.")
+    fexit()
+
+deleteDuplicates = input(f"{Fore.CYAN}>{Fore.RESET}Delete duplicates tokens? [Y/N]{Fore.CYAN}:{Fore.RESET} ")
+cls()
+if "2" in checktype:
+    try:
+        os.remove(f"{tokenDirectoryName}\\all_data.tmp")
+    except: None
+    open(f"{tokenDirectoryName}\\all_data.tmp", "a+")
+    print(f"Glue the files...\n")
+
+    files = glob.glob(f"{tokenDirectoryName}\\*.txt")
+    with open(f"{tokenDirectoryName}\\all_data.tmp", 'w', encoding="utf-8") as result:
+        for file_ in files:
+            for line in open( file_, 'r', encoding="utf-8"):
+                result.write(line)
+    tokenFileName = f"{tokenDirectoryName}\\all_data.tmp"
+
+if not os.path.exists(tokenFileName):
+    print(tokenFileName + " not exist.")
+    fexit()
 
 def main():
+    print(f"Parse tokens...")
     try:
-        os.remove(dirValidTokens)
-        os.remove(dirUnverifiedTokens)
-        os.remove(dirInvalidTokens)
-        os.remove(dirNitroTokens)
-        os.remove(dirInfoValidTokens)
-        os.remove(dirInfoUnverifiedTokens)
-        os.remove(dirInfoNitroTokens)
+        os.remove("Parsed Tokens.txt")
     except: None
-    open(dirValidTokens, 'a+')
-    open(dirUnverifiedTokens, 'a+')
-    open(dirInvalidTokens, 'a+')
-    if checkNitro.lower() == "y":
-        open(dirNitroTokens, 'a+')
-    if checkInfo.lower() == "y":
-        if checkNitro.lower() == "y":
-            open(dirInfoNitroTokens, 'a+')
-        open(dirInfoValidTokens, 'a+')
-        open(dirInfoUnverifiedTokens, 'a+')
+    open("Parsed Tokens.txt", "a+")
+    tokens = []
+    for line in [x.strip() for x in open(f"{tokenFileName}", errors="ignore").readlines() if x.strip()]:
+        for regex in (r"[\w-]{24}\.[\w-]{6}\.[\w-]{27}", r"mfa\.[\w-]{84}"):
+            for token in re.findall(regex, line):
+                tokens.append(token)
+    if deleteDuplicates.lower() == "y":
+        tokens = list(dict.fromkeys(tokens))
+    tokens_str = "\n".join(tokens)
+    with open("Parsed Tokens.txt", "a", encoding="utf-8") as f:
+        f.write(tokens_str)
+    found = sum(1 for line in open("Parsed Tokens.txt", "r", encoding="utf-8")) 
+    print(f"\nDone. Found {Fore.CYAN}{found}{Fore.RESET} tokens!")
     try:
-        for item in open(tokenFileName + ".txt", "r").readlines():
-            CheckToken(item.strip())
-        print("Every token have been checked.")
-        input(f"{Fore.MAGENTA}Press Enter button for exit")
-        exit()
-    except Exception as e:
-        print(e)
-        print("An unexepted error occurred !")
-        input(f"{Fore.MAGENTA}Press Enter button for exit")
-        exit()
-
-#Check Nitro
-def get_plan_id(token: str):
-    for json in requests.get('https://discord.com/api/v7/users/@me/billing/subscriptions', headers={'authorization': token}).json():
-        try:            
-            if json['plan_id'] == "511651880837840896":
-                return True
-            else:
-                return False
-        except:
-            return None
-#Check Payments
-def get_payment_id(token: str):
-    for json in requests.get('https://discordapp.com/api/v7/users/@me/billing/payment-sources', headers={'authorization': token}).json():
-        try:
-            if json['invalid'] == True:
-                return True
-            else:
-                return False
-        except:
-            return None
-
-def CheckToken(token):
-    if len(token) > 59:
-        lenght = " 2fa: Yes"
-        lenghtToken = f"{token}"
-    else:
-        lenght = " 2fa: No"
-        lenghtToken = f"{token}                             "
-    req = requests.get("https://discordapp.com/api/v7/users/@me?verified", headers={'authorization': token})
-    if req.status_code == 401:
-        #Invalid tokens
-        with open(dirInvalidTokens, "a", encoding='utf-8') as f:
-            f.write(token + "\n")
-            print(f"{Fore.WHITE}{lenghtToken}   |  {Fore.RED}Invalid")
-    elif req.status_code == 200:
-        #Parse data
-        json_response = req.json()
-        if checkInfo.lower() == "y":
-            id = (f' ID: {json_response["id"]}') 
-            username = (f' Username: {json_response["username"]}') 
-            discriminator = (f'#{json_response["discriminator"]}') 
-            locale = (f' Language: {json_response["locale"]}') 
-            email = (f' Email: {json_response["email"]}') 
-            phone = (f' Phone: {json_response["phone"]}') 
-        verified = (f'{json_response["verified"]}')
-        #Nitro Checker
-        if checkNitro.lower() == "y":
-            planid = get_plan_id(token)
-            if planid is not None:
-                if planid is True:
-                    plan = "Nitro"                 
-                else: 
-                    plan = "Classic" 
-            else:
-                plan = "No"  
-            payid = get_payment_id(token)  
-            if payid is not None:
-                if payid is True:
-                    pay = "Invalid"
-                else:
-                    pay = "Valid"  
-            else:
-                pay = "No"  
-            nitro = (f" Nitro: {plan} Billing: {pay}")
-        else:
-            nitro = ""
-        #Write file (SHIIIT CODE MOMENT)
-        if checkNitro.lower() == "y":
-            if ((plan is "Nitro" or plan is "Classic") or (pay is "Valid" or pay is "Invalid")):
-                with open(dirNitroTokens, "a", encoding='utf-8') as f:
-                    if checkInfo.lower() == "y":
-                        f.write(token + "\n")
-                        with open(dirInfoNitroTokens, "a", encoding='utf-8') as f:
-                            f.write(token + id + nitro + username + discriminator + locale + email + phone + lenght + "\n")
-                    else: 
-                        f.write(token + "\n")
-        if verified is not "False":
-            with open(dirValidTokens, "a", encoding='utf-8') as f:
-                if checkInfo.lower() == "y":
-                    f.write(token + "\n")
-                    with open(dirInfoValidTokens, "a", encoding='utf-8') as f:
-                        f.write(token + id + nitro + username + discriminator + locale + email + phone + lenght + "\n")
-                else: 
-                    f.write(token + "\n")
-            if checkNitro.lower() == "y":
-                if  (plan is "Nitro" or plan is "Classic") or (pay is "Valid" or pay is "Invalid"):
-                    print(f"{Fore.WHITE}{lenghtToken}   |  {Fore.MAGENTA}Nitro")
-                else:
-                    print(f"{Fore.WHITE}{lenghtToken}   |  {Fore.GREEN}Valid")
-            else:
-                print(f"{Fore.WHITE}{lenghtToken}   |  {Fore.GREEN}Valid")
-        else:
-            with open(dirUnverifiedTokens, "a", encoding='utf-8') as f:
-                if checkInfo.lower() == "y":
-                    f.write(token + "\n")
-                    with open(dirInfoUnverifiedTokens, "a", encoding='utf-8') as f:
-                        f.write(token + id + nitro + username + discriminator + locale + email + phone + lenght + "\n")
-                else:
-                    f.write(token + "\n")
-            print(f"{Fore.WHITE}{lenghtToken}   |  {Fore.YELLOW}Unverified")          
-    else:
-        print("An unexepted error occurred !")
-        input(f"{Fore.MAGENTA}Press Enter button for exit")
-        exit()
-    println()
-
-def println():
-    verify = sum(1 for line in open(dirValidTokens, 'r', encoding='utf-8'))
-    unverify = sum(1 for line in open(dirUnverifiedTokens, 'r', encoding='utf-8'))
-    inv = sum(1 for line in open(dirInvalidTokens, 'r', encoding='utf-8'))
-    if checkNitro.lower() == "y":
-        nit = sum(1 for line in open(dirNitroTokens, 'r', encoding='utf-8'))
-        ctypes.windll.kernel32.SetConsoleTitleW(f'Discord Token Checker by GuFFy_OwO  |  Checked: {verify + unverify + inv}/{txt}  |  Valid: {verify}  |  Unverified: {unverify}  |  Invalid: {inv}  |  NITRO: {nit}')
-    else:
-        ctypes.windll.kernel32.SetConsoleTitleW(f'Discord Token Checker by GuFFy_OwO  |  Checked: {verify + unverify + inv}/{txt}  |  Valid: {verify}  |  Unverified: {unverify}  |  Invalid: {inv}')
+        os.remove(f"{tokenDirectoryName}\\all_data.tmp")
+    except: None
+    fexit()
+      
 main()

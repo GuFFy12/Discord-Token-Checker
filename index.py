@@ -101,12 +101,13 @@ def CheckToken(token):
     elif req.status_code == 200:
         #Parse data
         json_response = req.json()
-        id = (f' ID: {json_response["id"]}') 
-        username = (f' Username: {json_response["username"]}') 
-        discriminator = (f'#{json_response["discriminator"]}') 
-        locale = (f' Language: {json_response["locale"]}') 
-        email = (f' Email: {json_response["email"]}') 
-        phone = (f' Phone: {json_response["phone"]}') 
+        if checkInfo.lower() == "y":
+            id = (f' ID: {json_response["id"]}') 
+            username = (f' Username: {json_response["username"]}') 
+            discriminator = (f'#{json_response["discriminator"]}') 
+            locale = (f' Language: {json_response["locale"]}') 
+            email = (f' Email: {json_response["email"]}') 
+            phone = (f' Phone: {json_response["phone"]}') 
         verified = (f'{json_response["verified"]}')
         #Nitro Checker
         if checkNitro.lower() == "y":
@@ -136,7 +137,7 @@ def CheckToken(token):
                     if checkInfo.lower() == "y":
                         f.write(token + "\n")
                         with open(dirInfoNitroTokens, "a", encoding='utf-8') as f:
-                            f.write(token + nitro + username + discriminator + locale + email + phone + lenght + "\n")
+                            f.write(token + id + nitro + username + discriminator + locale + email + phone + lenght + "\n")
                     else: 
                         f.write(token + "\n")
         if verified is not "False":

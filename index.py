@@ -2,10 +2,9 @@ import requests, colorama, os, ctypes
 from colorama import Fore, init
 from sys import exit
 
-init()
 
-def doIntro():
-    os.system("cls")
+
+os.system("cls")
 if __name__ == '__main__':
     os.system('cls')
     ctypes.windll.kernel32.SetConsoleTitleW("Discord Token Checker by GuFFy_OwO")
@@ -33,7 +32,6 @@ dirInfoNitroTokens = "./output/info_Nitro Tokens.txt"
 dirInvalidTokens = "./output/Invalid Tokens.txt"
 
 def main():
-    doIntro()
     try:
         os.remove(dirValidTokens)
         os.remove(dirUnverifiedTokens)

@@ -24,12 +24,12 @@ if (not os.path.exists(tokenFileName + ".txt")):
 else:
     txt = sum(1 for line in open(tokenFileName + ".txt", 'r'))
 
-dirValidTokens = "./output/info_Valid Tokens.txt"
-dirUnverifiedTokens = "./output/info_Unverified Tokens.txt"
-dirNitroTokens = "./output/info_Nitro Tokens.txt"
-dirInfoValidTokens = "./output/Valid Tokens.txt"
-dirInfoUnverifiedTokens = "./output/Unverified Token.txt"
-dirInfoNitroTokens = "./output/Nitro Tokens.txt"
+dirValidTokens = "./output/Valid Tokens.txt"
+dirUnverifiedTokens = "./output/Unverified Tokens.txt"
+dirNitroTokens = "./output/Nitro Tokens.txt"
+dirInfoValidTokens = "./output/info_Valid Tokens.txt"
+dirInfoUnverifiedTokens = "./output/info_Unverified Token.txt"
+dirInfoNitroTokens = "./output/info_Nitro Tokens.txt"
 dirInvalidTokens = "./output/Invalid Tokens.txt"
 
 def main():

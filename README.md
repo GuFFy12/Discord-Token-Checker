@@ -1,23 +1,18 @@
 # Discord-Token-Checker
-Check and write all account info + Check nitro on account
+Parse discord tokens from any file and directory. Check validity, nitro and paymenst.
 
-Also check https://github.com/GuFFy12/Discord-Token-Parser (Parse discord tokens from any file, even if there is other shit in the file with them.)
+Now it can parse tokens from any files and directory! I decided not to withdraw data from my account. I don't want to complicate the checker!
 
-I have a great desire to remake this shit code, but I'm too lazy😔
+![cmd_q8ZkkzHMf7](https://user-images.githubusercontent.com/49491499/130699999-39e86b8a-93c7-4429-b347-ff4acaf9ff20.png)
+![cmd_BA7BOkl33U](https://user-images.githubusercontent.com/49491499/130700004-e8dd5365-e834-401a-b0c3-75e6afa4bcd0.png)
+![cmd_QzWeXaokqz](https://user-images.githubusercontent.com/49491499/130700007-77db5eb4-8cf1-4233-a312-ec89185c5077.png)
+![cmd_I3wis3PDjq](https://user-images.githubusercontent.com/49491499/130700013-1f427453-9c47-4552-b313-6129a13db12d.png)
 
-JS EDITION: https://github.com/amfero/DiscordTokenChecker (I will contribute here (Py is 🤢))
+
+Disabling nitro checking on valid accounts increases speed by ~1.7 times
+
+JS EDITION: https://github.com/amfero/DiscordTokenChecker 
 
 TS EDITION: https://github.com/cattyngmd/DiscordTokenChecker-ts
 
 PY EDITION: https://github.com/GuFFy12/Discord-Token-Checker
-
-Output data:
-
-Token.rat Nitro: {Nitro or Classic or No} Billing: {Valid or Invalid or No} Username: lol#1337 Language: ru Email: mamont@gmail.com Phone: +88005553535 2fa: {Yes or No}
-
-![cmd_bpkQFCeCIj](https://user-images.githubusercontent.com/49491499/121934641-01c2d680-cd61-11eb-9c75-1b312bd87081.png)
-![image](https://user-images.githubusercontent.com/49491499/121957372-bc5fd280-cd7b-11eb-8ac9-1bd8beb051b1.png)
-
-Disabling nitro checking on valid accounts increases speed by ~1.7 times
-
-https://github.com/ES-Nighty/Discord-Token-Checker (Check valid tokens)

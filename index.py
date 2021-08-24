@@ -8,6 +8,7 @@ def cls():
 def fexit():
     print()
     input(f"{Fore.RESET}Press Enter button for exit.")
+    cls()
     exit()
 
 if __name__ == "__main__":
@@ -66,7 +67,7 @@ print()
 checkTokens = input(f"{Fore.CYAN}>{Fore.RESET}Check validity tokens? [Y/N]{Fore.CYAN}:{Fore.RESET} ")
 if "y" in checkTokens.lower():
     print()
-    checkNitro = input(f"{Fore.CYAN}>{Fore.RESET}Check nitro and payments on tokens? [Y/N] {Fore.CYAN}:{Fore.RESET} ")
+    checkNitro = input(f"{Fore.CYAN}>{Fore.RESET}Check nitro and payments on tokens? [Y/N]{Fore.CYAN}:{Fore.RESET} ")
     if "y" or "n" in checkNitro.lower():
         None
     else:

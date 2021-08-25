@@ -148,9 +148,9 @@ def checker():
             CheckToken(item.strip())
         print()
         if checkNitro.lower() == "y":
-            print(f"{Fore.CYAN}Checked{Fore.RESET}: {checked}/{found}  |  {Fore.GREEN}Valid{Fore.RESET}: {verified}  |  {Fore.YELLOW}Unverified{Fore.RESET}: {unverified}  |  {Fore.RED}Invalid{Fore.RESET}: {invalid}  |  {Fore.BLUE}Same Users{Fore.RESET}: {sameTokens}  |  {Fore.MAGENTA}NITRO{Fore.RESET}: {nitro}")
+            print(f"{Fore.CYAN}Checked{Fore.RESET}: {checked}/{found}  |  {Fore.GREEN}Valid{Fore.RESET}: {verified}  |  {Fore.YELLOW}Unverified{Fore.RESET}: {unverified}  |  {Fore.RED}Invalid{Fore.RESET}: {invalid}  |  {Fore.BLUE}Same Tokens{Fore.RESET}: {sameTokens}  |  {Fore.MAGENTA}NITRO{Fore.RESET}: {nitro}")
         else:
-            print(f"{Fore.CYAN}Checked{Fore.RESET}: {checked}/{found}  |  {Fore.GREEN}Valid{Fore.RESET}: {verified}  |  {Fore.YELLOW}Unverified{Fore.RESET}: {unverified}  |  {Fore.RED}Invalid{Fore.RESET}: {invalid}  |  {Fore.BLUE}Same Users{Fore.RESET}: {sameTokens}")
+            print(f"{Fore.CYAN}Checked{Fore.RESET}: {checked}/{found}  |  {Fore.GREEN}Valid{Fore.RESET}: {verified}  |  {Fore.YELLOW}Unverified{Fore.RESET}: {unverified}  |  {Fore.RED}Invalid{Fore.RESET}: {invalid}  |  {Fore.BLUE}Same Tokens{Fore.RESET}: {sameTokens}")
         if os.name=="nt":
             os.system(f'start {os.path.realpath("output")}')     
         fexit()
@@ -243,8 +243,8 @@ def CheckToken(token):
 
 def title():
     if checkNitro.lower() == "y":
-        ctypes.windll.kernel32.SetConsoleTitleW(f"Discord Token Checker by GuFFy_OwO  |  Checked: {checked}/{found}  |  Valid: {verified}  |  Unverified: {unverified}  |  Invalid: {invalid}  |  Same Users: {sameTokens}  |  NITRO: {nitro}")
+        ctypes.windll.kernel32.SetConsoleTitleW(f"Discord Token Checker by GuFFy_OwO  |  Checked: {checked}/{found}  |  Valid: {verified}  |  Unverified: {unverified}  |  Invalid: {invalid}  |  Same Tokens: {sameTokens}  |  NITRO: {nitro}")
     else:
-        ctypes.windll.kernel32.SetConsoleTitleW(f"Discord Token Checker by GuFFy_OwO  |  Checked: {checked}/{found}  |  Valid: {verified}  |  Unverified: {unverified}  |  Invalid: {invalid}  |  Same Users: {sameTokens}")
+        ctypes.windll.kernel32.SetConsoleTitleW(f"Discord Token Checker by GuFFy_OwO  |  Checked: {checked}/{found}  |  Valid: {verified}  |  Unverified: {unverified}  |  Invalid: {invalid}  |  Same Tokens: {sameTokens}")
 
 main()

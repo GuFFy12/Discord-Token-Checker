@@ -74,7 +74,7 @@ else:
 
 dirValidTokens = f"output/{checkName}_valid.txt"
 dirUnverifiedTokens = f"output/{checkName}_unverified.txt"
-dirsameTokens = f"output/{checkName}_sameTokens.txt"
+dirSameTokens = f"output/{checkName}_sameTokens.txt"
 dirInvalidTokens =f"output/{checkName}_invalid.txt"
 dirNitroTokens = f"output/{checkName}_nitro.txt"
 dirDataTmp = f"output/{checkName}_data.tmp"
@@ -141,7 +141,7 @@ def checker():
         os.remove(dirUnverifiedTokens)
         os.remove(dirInvalidTokens)
         os.remove(dirNitroTokens)
-        os.remove(dirsameTokens)
+        os.remove(dirSameTokens)
     except: None
     try:
         for item in open(dirParsedTokens, "r").readlines():
@@ -209,7 +209,7 @@ def CheckToken(token):
     user_info = get_user_info(token)
     if user_info == "sameToken":
         print(f"{Fore.WHITE}{lenghtToken}   |  {Fore.BLUE}Same User{Fore.RESET}")
-        with open(dirsameTokens, "a", encoding="utf-8") as f:
+        with open(dirSameTokens, "a", encoding="utf-8") as f:
                 f.write(token + "\n")
         sameTokens+= 1
     else:

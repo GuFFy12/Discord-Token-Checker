@@ -47,6 +47,7 @@ elif "2" in checkType:
     if "1" in ckeckFilesType:
         files = {p.resolve() for p in Path(tokenDirectoryName).glob("**/*.*")}
     elif "2" in ckeckFilesType:
+        cls()
         fileTypes = ["." + x for x in input(f"{Fore.CYAN}>{Fore.RESET}Enter file types in wich are the unchecked tokens separated by space [txt json html ...]{Fore.CYAN}:{Fore.RESET} ").split()]
         files = {p.resolve() for p in Path(tokenDirectoryName).glob("**/*") if p.suffix in fileTypes}
     else:

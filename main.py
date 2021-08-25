@@ -239,9 +239,9 @@ def CheckToken(token):
             unverified += 1    
     checked  += 1
     if __name__ == "__main__":
-        println()
+        title()
 
-def println():
+def title():
     if checkNitro.lower() == "y":
         ctypes.windll.kernel32.SetConsoleTitleW(f"Discord Token Checker by GuFFy_OwO  |  Checked: {checked}/{found}  |  Valid: {verified}  |  Unverified: {unverified}  |  Invalid: {invalid}  |  Same Users: {SameTokens}  |  NITRO: {nitro}")
     else:

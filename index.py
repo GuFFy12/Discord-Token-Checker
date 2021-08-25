@@ -1,4 +1,4 @@
-import requests, colorama, os, ctypes, re, glob
+import requests, os, ctypes, re
 from colorama import Fore
 from pathlib import Path
 from sys import exit
@@ -14,7 +14,6 @@ def fexit():
 
 if __name__ == "__main__":
     ctypes.windll.kernel32.SetConsoleTitleW("Discord Token Checker by GuFFy_OwO")
-    colorama.init()
 
 if not os.path.exists("output"):
     os.makedirs("output")
@@ -23,14 +22,13 @@ cls()
 print(f"{Fore.RESET}[{Fore.CYAN}1{Fore.RESET}] Check one file")
 print(f"{Fore.RESET}[{Fore.CYAN}2{Fore.RESET}] Check many files")
 print()
-
 checkType = input(f"{Fore.CYAN}>{Fore.RESET}Select An Option{Fore.CYAN}:{Fore.RESET} ")
 if "1" in checkType:
-    cls()
+    print()
     tokenFileName = input(f"{Fore.CYAN}>{Fore.RESET}Enter the name of the file in wich are the unchecked tokens{Fore.CYAN}:{Fore.RESET} ")
     checkName = os.path.splitext(os.path.basename(tokenFileName))[0]
 elif "2" in checkType:
-    cls()
+    print()
     tokenDirectoryName = input(f"{Fore.CYAN}>{Fore.RESET}Enter the directory of the files in wich are the unchecked tokens{Fore.CYAN}:{Fore.RESET} ")
     if not os.path.exists(tokenDirectoryName):
         print()
@@ -45,30 +43,20 @@ elif "2" in checkType:
     print()
     ckeckFilesType = input(f"{Fore.CYAN}>{Fore.RESET}Select An Option{Fore.CYAN}:{Fore.RESET} ")
     if "1" in ckeckFilesType:
-        files = {p.resolve() for p in Path(tokenDirectoryName).glob("**/*.*")}
+        None
     elif "2" in ckeckFilesType:
-        cls()
+        print()
         fileTypes = ["." + x for x in input(f"{Fore.CYAN}>{Fore.RESET}Enter file types in wich are the unchecked tokens separated by space [txt json html ...]{Fore.CYAN}:{Fore.RESET} ").split()]
-        files = {p.resolve() for p in Path(tokenDirectoryName).glob("**/*") if p.suffix in fileTypes}
     else:
         print()
         print("Invalid Option.")
         fexit()
-    open("output/all_data.tmp", "a+")
-    cls()
-    print("Glue the files...")
-    with open(f"output/all_data.tmp", "w", encoding="utf-8") as result:
-        for file_ in files:
-            for line in open( file_, "r", encoding="utf-8", errors="ignore"):
-                result.write(line)
-    tokenFileName = "output/all_data.tmp"
-    checkName = os.path.basename(tokenDirectoryName)
 else:
     print()
     print("Invalid Option.")
     fexit()
 
-cls()
+print()
 checkTokens = input(f"{Fore.CYAN}>{Fore.RESET}Check validity tokens? [Y/N]{Fore.CYAN}:{Fore.RESET} ")
 if "y" in checkTokens.lower():
     print()
@@ -86,6 +74,23 @@ else:
     print("Invalid Option.")
     fexit()
 
+if "2" in checkType:
+    open("output/all_data.tmp", "a+")
+    cls()
+    print("Glue files...")
+    if "1" in ckeckFilesType:
+        files = {p.resolve() for p in Path(tokenDirectoryName).glob("**/*.*")}
+    elif "2" in ckeckFilesType:
+        files = {p.resolve() for p in Path(tokenDirectoryName).glob("**/*") if p.suffix in fileTypes}
+    with open(f"output/all_data.tmp", "w", encoding="utf-8") as result:
+        for file_ in files:
+            for line in open( file_, "r", encoding="utf-8", errors="ignore"):
+                result.write(line)
+    print()
+    print("Done!")
+    tokenFileName = "output/all_data.tmp"
+    checkName = os.path.basename(tokenDirectoryName)
+
 dirValidTokens = f"output/{checkName}_valid.txt"
 dirUnverifiedTokens = f"output/{checkName}_unverified.txt"
 dirInvalidTokens =f"output/{checkName}_invalid.txt"
@@ -102,8 +107,8 @@ idlist = []
 
 def main():
     global found
-    cls()
-    print(f"Parse tokens...\n")
+    print()
+    print(f"Parse tokens...")
     try:
         os.remove(dirParsedTokens)
     except: None
@@ -118,7 +123,8 @@ def main():
     with open(dirParsedTokens, "a", encoding="utf-8") as f:
         f.write(tokens_str)
     found = sum(1 for line in open(dirParsedTokens, "r", encoding="utf-8")) 
-    print(f"Done. Found {Fore.CYAN}{found}{Fore.RESET} tokens!")
+    print()
+    print(f"Done! Found {Fore.CYAN}{found}{Fore.RESET} tokens!")
     try:
         os.remove("output/all_data.tmp")
     except: None
@@ -231,7 +237,8 @@ def CheckToken(token):
             print(f"{Fore.WHITE}{lenghtToken}   |  {Fore.YELLOW}Unverified{Fore.RESET}")
             unverified += 1    
     checked  += 1
-    println()
+    if __name__ == "__main__":
+        println()
 
 def println():
     if checkNitro.lower() == "y":

@@ -3,10 +3,11 @@ Parse discord tokens from any file and directory. Check validity, nitro and paym
 
 Now it can parse tokens from any files and directory! I decided not to withdraw data from account. I don't want to complicate the checker!
 
-![cmd_q8ZkkzHMf7](https://user-images.githubusercontent.com/49491499/130699999-39e86b8a-93c7-4429-b347-ff4acaf9ff20.png)
-![cmd_BA7BOkl33U](https://user-images.githubusercontent.com/49491499/130700004-e8dd5365-e834-401a-b0c3-75e6afa4bcd0.png)
-![cmd_QzWeXaokqz](https://user-images.githubusercontent.com/49491499/130700007-77db5eb4-8cf1-4233-a312-ec89185c5077.png)
-![cmd_I3wis3PDjq](https://user-images.githubusercontent.com/49491499/130700013-1f427453-9c47-4552-b313-6129a13db12d.png)
+## Menu
+![cmd_mO9d4Vud3I](https://user-images.githubusercontent.com/49491499/130788540-a8d20eaa-751c-4bce-a586-f48cf4a9f6ae.png)
+![cmd_ayxu9GSYTY](https://user-images.githubusercontent.com/49491499/130788608-2d4329d0-4571-4e26-8f79-cd7dda2046e1.png)
+![PicasaPhotoViewer_GjD5xXiPtk](https://user-images.githubusercontent.com/49491499/130788754-e205afde-2f9a-4bac-bc0f-3c2b93682c89.png)
+![explorer_SNoCXFQtuw](https://user-images.githubusercontent.com/49491499/130788879-00afe996-3a60-43aa-8c2e-0e42236f8755.png)
 
 
 Disabling nitro checking on valid accounts increases speed by ~1.7 times

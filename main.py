@@ -30,13 +30,11 @@ if "1" in checkType:
 elif "2" in checkType:
     print()
     tokenDirectoryName = input(f"{Fore.CYAN}>{Fore.RESET}Enter the directory of the files in wich are the unchecked tokens{Fore.CYAN}:{Fore.RESET} ")
+    checkName = os.path.basename(tokenDirectoryName)
     if not os.path.exists(tokenDirectoryName):
         print()
-        print(tokenDirectoryName + " directory not exist.")
+        print(f"{tokenDirectoryName} directory not exist.")
         fexit()
-    try:
-        os.remove("output/all_data.tmp")
-    except: None
     print()
     print(f"{Fore.RESET}[{Fore.CYAN}1{Fore.RESET}] Check all files")
     print(f"{Fore.RESET}[{Fore.CYAN}2{Fore.RESET}] Enter files formats")
@@ -74,45 +72,46 @@ else:
     print("Invalid Option.")
     fexit()
 
-if "2" in checkType:
-    open("output/all_data.tmp", "a+")
-    cls()
-    print("Glue files...")
-    if "1" in ckeckFilesType:
-        files = {p.resolve() for p in Path(tokenDirectoryName).glob("**/*.*")}
-    elif "2" in ckeckFilesType:
-        files = {p.resolve() for p in Path(tokenDirectoryName).glob("**/*") if p.suffix in fileTypes}
-    with open(f"output/all_data.tmp", "w", encoding="utf-8") as result:
-        for file_ in files:
-            for line in open( file_, "r", encoding="utf-8", errors="ignore"):
-                result.write(line)
-    print()
-    print("Done!")
-    tokenFileName = "output/all_data.tmp"
-    checkName = os.path.basename(tokenDirectoryName)
-
 dirValidTokens = f"output/{checkName}_valid.txt"
 dirUnverifiedTokens = f"output/{checkName}_unverified.txt"
+dirSameTokens = f"output/{checkName}_sameTokens.txt"
 dirInvalidTokens =f"output/{checkName}_invalid.txt"
 dirNitroTokens = f"output/{checkName}_nitro.txt"
+dirDataTmp = f"output/{checkName}_data.tmp"
 dirParsedTokens = f"output/{os.path.basename(checkName)}_parsed.txt"
 
 checked = 0
 verified = 0
-SameUsers = 0
 unverified = 0
+SameTokens = 0
 invalid = 0
 nitro = 0
 idlist = []
 
 def main():
     global found
+    if "2" in checkType:
+        cls()
+        try:
+            os.remove(dirDataTmp)
+        except: None
+        print("Glue files...")
+        if "1" in ckeckFilesType:
+            files = {p.resolve() for p in Path(tokenDirectoryName).glob("**/*.*")}
+        elif "2" in ckeckFilesType:
+            files = {p.resolve() for p in Path(tokenDirectoryName).glob("**/*") if p.suffix in fileTypes}
+        with open(dirDataTmp, "w", encoding="utf-8") as result:
+            for file_ in files:
+                for line in open( file_, "r", encoding="utf-8", errors="ignore"):
+                    result.write(line)
+        print()
+        print("Done!")
+        tokenFileName = dirDataTmp
     print()
     print(f"Parse tokens...")
     try:
         os.remove(dirParsedTokens)
     except: None
-    open(dirParsedTokens, "a+")
     tokens = []
     for line in [x.strip() for x in open(f"{tokenFileName}", errors="ignore").readlines() if x.strip()]:
         for regex in (r"[\w-]{24}\.[\w-]{6}\.[\w-]{27}", r"mfa\.[\w-]{84}"):
@@ -122,15 +121,17 @@ def main():
     tokens_str = "\n".join(tokens)
     with open(dirParsedTokens, "a", encoding="utf-8") as f:
         f.write(tokens_str)
-    found = sum(1 for line in open(dirParsedTokens, "r", encoding="utf-8")) 
+    found = len(open(dirParsedTokens).readlines())
     print()
     print(f"Done! Found {Fore.CYAN}{found}{Fore.RESET} tokens!")
     try:
-        os.remove("output/all_data.tmp")
+        os.remove(dirDataTmp)
     except: None
     if checkTokens.lower() == "y":
         checker()
     else:
+        if os.name=="nt":
+            os.system(f'start {os.path.realpath("output")}') 
         fexit()   
 
 def checker(): 
@@ -140,20 +141,18 @@ def checker():
         os.remove(dirUnverifiedTokens)
         os.remove(dirInvalidTokens)
         os.remove(dirNitroTokens)
+        os.remove(dirSameTokens)
     except: None
-    open(dirValidTokens, "a+")
-    open(dirUnverifiedTokens, "a+")
-    open(dirInvalidTokens, "a+")
-    if checkNitro.lower() == "y":
-        open(dirNitroTokens, "a+")
     try:
         for item in open(dirParsedTokens, "r").readlines():
             CheckToken(item.strip())
         print()
         if checkNitro.lower() == "y":
-            print(f"{Fore.CYAN}Checked{Fore.RESET}: {checked}/{found}  |  {Fore.GREEN}Valid{Fore.RESET}: {verified}  |  {Fore.YELLOW}Unverified{Fore.RESET}: {unverified}  |  {Fore.RED}Invalid{Fore.RESET}: {invalid}  |  {Fore.BLUE}Same Users{Fore.RESET}: {SameUsers}  |  {Fore.MAGENTA}NITRO{Fore.RESET}: {nitro}")
+            print(f"{Fore.CYAN}Checked{Fore.RESET}: {checked}/{found}  |  {Fore.GREEN}Valid{Fore.RESET}: {verified}  |  {Fore.YELLOW}Unverified{Fore.RESET}: {unverified}  |  {Fore.RED}Invalid{Fore.RESET}: {invalid}  |  {Fore.BLUE}Same Users{Fore.RESET}: {SameTokens}  |  {Fore.MAGENTA}NITRO{Fore.RESET}: {nitro}")
         else:
-            print(f"{Fore.CYAN}Checked{Fore.RESET}: {checked}/{found}  |  {Fore.GREEN}Valid{Fore.RESET}: {verified}  |  {Fore.YELLOW}Unverified{Fore.RESET}: {unverified}  |  {Fore.RED}Invalid{Fore.RESET}: {invalid}  |  {Fore.BLUE}Same Users{Fore.RESET}: {SameUsers}")
+            print(f"{Fore.CYAN}Checked{Fore.RESET}: {checked}/{found}  |  {Fore.GREEN}Valid{Fore.RESET}: {verified}  |  {Fore.YELLOW}Unverified{Fore.RESET}: {unverified}  |  {Fore.RED}Invalid{Fore.RESET}: {invalid}  |  {Fore.BLUE}Same Users{Fore.RESET}: {SameTokens}")
+        if os.name=="nt":
+            os.system(f'start {os.path.realpath("output")}')     
         fexit()
     except Exception as e:
         print(e)
@@ -199,7 +198,7 @@ def get_payment_id(token: str):
 def CheckToken(token):
     global checked
     global verified
-    global SameUsers
+    global SameTokens
     global unverified
     global invalid
     global nitro
@@ -210,7 +209,9 @@ def CheckToken(token):
     user_info = get_user_info(token)
     if user_info == "SameUser":
         print(f"{Fore.WHITE}{lenghtToken}   |  {Fore.BLUE}Same User{Fore.RESET}")
-        SameUsers+= 1
+        with open(dirSameTokens, "a", encoding="utf-8") as f:
+                f.write(token + "\n")
+        SameTokens+= 1
     else:
         if user_info == None:
             with open(dirInvalidTokens, "a", encoding="utf-8") as f:
@@ -242,8 +243,8 @@ def CheckToken(token):
 
 def println():
     if checkNitro.lower() == "y":
-        ctypes.windll.kernel32.SetConsoleTitleW(f"Discord Token Checker by GuFFy_OwO  |  Checked: {checked}/{found}  |  Valid: {verified}  |  Unverified: {unverified}  |  Invalid: {invalid}  |  Same Users: {SameUsers}  |  NITRO: {nitro}")
+        ctypes.windll.kernel32.SetConsoleTitleW(f"Discord Token Checker by GuFFy_OwO  |  Checked: {checked}/{found}  |  Valid: {verified}  |  Unverified: {unverified}  |  Invalid: {invalid}  |  Same Users: {SameTokens}  |  NITRO: {nitro}")
     else:
-        ctypes.windll.kernel32.SetConsoleTitleW(f"Discord Token Checker by GuFFy_OwO  |  Checked: {checked}/{found}  |  Valid: {verified}  |  Unverified: {unverified}  |  Invalid: {invalid}  |  Same Users: {SameUsers}")
+        ctypes.windll.kernel32.SetConsoleTitleW(f"Discord Token Checker by GuFFy_OwO  |  Checked: {checked}/{found}  |  Valid: {verified}  |  Unverified: {unverified}  |  Invalid: {invalid}  |  Same Users: {SameTokens}")
 
 main()

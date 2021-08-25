@@ -74,7 +74,7 @@ else:
 
 dirValidTokens = f"output/{checkName}_valid.txt"
 dirUnverifiedTokens = f"output/{checkName}_unverified.txt"
-dirSameTokens = f"output/{checkName}_sameTokens.txt"
+dirsameTokens = f"output/{checkName}_sameTokens.txt"
 dirInvalidTokens =f"output/{checkName}_invalid.txt"
 dirNitroTokens = f"output/{checkName}_nitro.txt"
 dirDataTmp = f"output/{checkName}_data.tmp"
@@ -83,7 +83,7 @@ dirParsedTokens = f"output/{os.path.basename(checkName)}_parsed.txt"
 checked = 0
 verified = 0
 unverified = 0
-SameTokens = 0
+sameTokens = 0
 invalid = 0
 nitro = 0
 idlist = []
@@ -141,16 +141,16 @@ def checker():
         os.remove(dirUnverifiedTokens)
         os.remove(dirInvalidTokens)
         os.remove(dirNitroTokens)
-        os.remove(dirSameTokens)
+        os.remove(dirsameTokens)
     except: None
     try:
         for item in open(dirParsedTokens, "r").readlines():
             CheckToken(item.strip())
         print()
         if checkNitro.lower() == "y":
-            print(f"{Fore.CYAN}Checked{Fore.RESET}: {checked}/{found}  |  {Fore.GREEN}Valid{Fore.RESET}: {verified}  |  {Fore.YELLOW}Unverified{Fore.RESET}: {unverified}  |  {Fore.RED}Invalid{Fore.RESET}: {invalid}  |  {Fore.BLUE}Same Users{Fore.RESET}: {SameTokens}  |  {Fore.MAGENTA}NITRO{Fore.RESET}: {nitro}")
+            print(f"{Fore.CYAN}Checked{Fore.RESET}: {checked}/{found}  |  {Fore.GREEN}Valid{Fore.RESET}: {verified}  |  {Fore.YELLOW}Unverified{Fore.RESET}: {unverified}  |  {Fore.RED}Invalid{Fore.RESET}: {invalid}  |  {Fore.BLUE}Same Users{Fore.RESET}: {sameTokens}  |  {Fore.MAGENTA}NITRO{Fore.RESET}: {nitro}")
         else:
-            print(f"{Fore.CYAN}Checked{Fore.RESET}: {checked}/{found}  |  {Fore.GREEN}Valid{Fore.RESET}: {verified}  |  {Fore.YELLOW}Unverified{Fore.RESET}: {unverified}  |  {Fore.RED}Invalid{Fore.RESET}: {invalid}  |  {Fore.BLUE}Same Users{Fore.RESET}: {SameTokens}")
+            print(f"{Fore.CYAN}Checked{Fore.RESET}: {checked}/{found}  |  {Fore.GREEN}Valid{Fore.RESET}: {verified}  |  {Fore.YELLOW}Unverified{Fore.RESET}: {unverified}  |  {Fore.RED}Invalid{Fore.RESET}: {invalid}  |  {Fore.BLUE}Same Users{Fore.RESET}: {sameTokens}")
         if os.name=="nt":
             os.system(f'start {os.path.realpath("output")}')     
         fexit()
@@ -171,7 +171,7 @@ def get_user_info(token: str):
             else:
                 return False
         else:
-            return "SameUser"
+            return "sameToken"
     else:
         return None
 
@@ -198,7 +198,7 @@ def get_payment_id(token: str):
 def CheckToken(token):
     global checked
     global verified
-    global SameTokens
+    global sameTokens
     global unverified
     global invalid
     global nitro
@@ -207,11 +207,11 @@ def CheckToken(token):
     else:
         lenghtToken = f"{token}                             "
     user_info = get_user_info(token)
-    if user_info == "SameUser":
+    if user_info == "sameToken":
         print(f"{Fore.WHITE}{lenghtToken}   |  {Fore.BLUE}Same User{Fore.RESET}")
-        with open(dirSameTokens, "a", encoding="utf-8") as f:
+        with open(dirsameTokens, "a", encoding="utf-8") as f:
                 f.write(token + "\n")
-        SameTokens+= 1
+        sameTokens+= 1
     else:
         if user_info == None:
             with open(dirInvalidTokens, "a", encoding="utf-8") as f:
@@ -243,8 +243,8 @@ def CheckToken(token):
 
 def title():
     if checkNitro.lower() == "y":
-        ctypes.windll.kernel32.SetConsoleTitleW(f"Discord Token Checker by GuFFy_OwO  |  Checked: {checked}/{found}  |  Valid: {verified}  |  Unverified: {unverified}  |  Invalid: {invalid}  |  Same Users: {SameTokens}  |  NITRO: {nitro}")
+        ctypes.windll.kernel32.SetConsoleTitleW(f"Discord Token Checker by GuFFy_OwO  |  Checked: {checked}/{found}  |  Valid: {verified}  |  Unverified: {unverified}  |  Invalid: {invalid}  |  Same Users: {sameTokens}  |  NITRO: {nitro}")
     else:
-        ctypes.windll.kernel32.SetConsoleTitleW(f"Discord Token Checker by GuFFy_OwO  |  Checked: {checked}/{found}  |  Valid: {verified}  |  Unverified: {unverified}  |  Invalid: {invalid}  |  Same Users: {SameTokens}")
+        ctypes.windll.kernel32.SetConsoleTitleW(f"Discord Token Checker by GuFFy_OwO  |  Checked: {checked}/{found}  |  Valid: {verified}  |  Unverified: {unverified}  |  Invalid: {invalid}  |  Same Users: {sameTokens}")
 
 main()

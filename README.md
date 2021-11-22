@@ -1,6 +1,8 @@
 # Discord-Token-Checker
 Parse discord tokens from any file and directory. Check validity, nitro and paymenst.
 
+I DONT WANT UPDATE PROJECT, SOME BIG ISSUES AND NOT GOOD FUNC!!! EXTRA SHITCODE!
+
 Now it can parse tokens from any files and directory! I decided not to withdraw data from account. I don't want to complicate the checker!
 
 ## Menu

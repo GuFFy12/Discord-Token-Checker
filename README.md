@@ -4,6 +4,16 @@
 ## Menu
 ![image](https://user-images.githubusercontent.com/49491499/158225117-e7f35c9c-9255-4479-a384-db8e0ea577ba.png)
 
+## Update!
+
+Firstly, now the token data is processed on a remote server. This is due to the fact that I have been writing a telegram bot for checking tokens for a long time and I did not want to rewrite the backend for python.
+
+In this regard, the speed increased from 1 token per second to 40. I achieved this with the help of parallel requests and proxies, it was difficult to implement in python. Also, when I finish the nuker, it will probably be the fastest, since the 429 error handler with limit checking will be used.
+
+As soon as I complete the backend (checker, info, idTracker, webhookSpammer, nitroBuyer, serverNuker, userNuker,messageSearcher) I will publish it in the public domain.
+
+You can still download the old checker in older versions.
+
 ## Output
 
 Standart output with valid, invalid, etc txt files.
@@ -30,16 +40,6 @@ Json output:
 ```
 
 Since 1 more request is needed for the final verification of tokens, then you get the payment sources as a side to discord.gg/users/@me
-
-## Update!
-
-Firstly, now the token data is processed on a remote server. This is due to the fact that I have been writing a telegram bot for checking tokens for a long time and I did not want to rewrite the backend for python.
-
-In this regard, the speed increased from 1 token per second to 40. I achieved this with the help of parallel requests and proxies, it was difficult to implement in python. Also, when I finish the nuker, it will probably be the fastest, since the 429 error handler with limit checking will be used.
-
-As soon as I complete the backend (checker, info, idTracker, webhookSpammer, nitroBuyer, serverNuker, userNuker,messageSearcher) I will publish it in the public domain.
-
-You can still download the old checker in older versions.
 
 
 ## OLD Menu

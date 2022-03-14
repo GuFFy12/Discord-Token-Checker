@@ -1,8 +1,9 @@
+import json
 import os
 import re
 import time
 from sys import exit
-import json
+
 import requests
 from colorama import Fore
 

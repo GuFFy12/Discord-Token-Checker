@@ -51,7 +51,7 @@ class Checker:
                 f"{Fore.CYAN}>{Fore.RESET}Enter tokens{Fore.CYAN}:{Fore.RESET} ")
         elif "2" in check_type:
             token_file_name = input(
-                f"{Fore.CYAN}>{Fore.RESET}Enter the directory of the files in which are the unchecked tokens{Fore.CYAN}:{Fore.RESET} ")
+                f"{Fore.CYAN}>{Fore.RESET}Enter the directory of the files or file in which are the unchecked tokens{Fore.CYAN}:{Fore.RESET} ")
             if not os.path.exists(token_file_name):
                 fast_exit(f"{token_file_name} directory not exist.")
 

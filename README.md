@@ -1,17 +1,52 @@
 # Discord-Token-Checker
-BIG UPDATE SOON
 
-Parse discord tokens from any file and directory. Check validity, nitro and paymenst.
-
-I DONT WANT UPDATE PROJECT, SOME BIG ISSUES AND NOT GOOD FUNC!!! EXTRA SHITCODE!
-
-Now it can parse tokens from any files and directory! I decided not to withdraw data from account. I don't want to complicate the checker!
 
 ## Menu
+![image](https://user-images.githubusercontent.com/49491499/158225117-e7f35c9c-9255-4479-a384-db8e0ea577ba.png)
+
+## Output
+
+Standart output with valid, invalid, etc txt files.
+
+Json output:
+```json
+{
+    "tokensInfo": {
+        "valid": [],
+        "nitro": [],
+        "payments": [],
+        "unverified": [],
+        "invalid": [],
+        "parsedTokens": []
+    },
+    "tokensData": {
+        "TOKEN": {
+            "status": "invalid",
+            "me": {},
+            "payment-sources": {}
+        }
+    }
+}        
+```
+
+Since 1 more request is needed for the final verification of tokens, then you get the payment sources as a side to discord.gg/users/@me
+
+## Update!
+
+Firstly, now the token data is processed on a remote server. This is due to the fact that I have been writing a telegram bot for checking tokens for a long time and I did not want to rewrite the backend for python.
+
+In this regard, the speed increased from 1 token per second to 40. I achieved this with the help of parallel requests and proxies, it was difficult to implement in python. Also, when I finish the nuker, it will probably be the fastest, since the 429 error handler with limit checking will be used.
+
+As soon as I complete the backend (checker, info, idTracker, webhookSpammer, nitroBuyer, serverNuker, userNuker,messageSearcher) I will publish it in the public domain.
+
+You can still download the old checker in older versions.
+
+
+## OLD Menu
 ![cmd_mO9d4Vud3I](https://user-images.githubusercontent.com/49491499/130788540-a8d20eaa-751c-4bce-a586-f48cf4a9f6ae.png)
-## Checker
+## OLD Checker
 ![browser_G49q1xqgiV](https://user-images.githubusercontent.com/49491499/130812769-e5ab2ad3-612d-4d58-8bf9-d7b66b718a62.png)
-## Parser
+## OLD Parser
 ![cmd_ayxu9GSYTY](https://user-images.githubusercontent.com/49491499/130788608-2d4329d0-4571-4e26-8f79-cd7dda2046e1.png)
 
 

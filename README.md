@@ -12,7 +12,7 @@ In this regard, the speed increased from 1 token per second to 40. I achieved th
 
 As soon as I complete the backend (checker, info, idTracker, webhookSpammer, nitroBuyer, serverNuker, userNuker,messageSearcher) I will publish it in the public.
 
-You can still download the old checker in older versions.
+You can still download the old checker in older versions. https://github.com/GuFFy12/Discord-Token-Checker/tree/a3522d1254ea60b82afe52f976cae18041d08171
 
 ## Output
 

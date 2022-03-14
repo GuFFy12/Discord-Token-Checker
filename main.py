@@ -2,6 +2,7 @@ import json
 import os
 import re
 import time
+from pathlib import Path
 from sys import exit
 
 import requests
@@ -12,7 +13,9 @@ def cls():
     os.system("cls" if os.name == "nt" else "clear")
 
 
-def fast_exit():
+def fast_exit(error):
+    print()
+    print(error)
     print()
     input(f"{Fore.RESET}Press Enter button for exit.")
     cls()
@@ -50,16 +53,21 @@ class Checker:
             token_file_name = input(
                 f"{Fore.CYAN}>{Fore.RESET}Enter the directory of the files in which are the unchecked tokens{Fore.CYAN}:{Fore.RESET} ")
             if not os.path.exists(token_file_name):
-                print()
-                print(f"{token_file_name} directory not exist.")
-                fast_exit()
+                fast_exit(f"{token_file_name} directory not exist.")
 
-            with open(token_file_name, "r", encoding="utf-8") as f:
-                tokens = f.read()
+            if os.path.isfile(token_file_name):
+                with open(token_file_name, "r", encoding="utf-8") as f:
+                    tokens = f.read()
+            else:
+                types = ["*.txt", "*.html", "*.json"]
+                for search_type in types:
+                    for path in Path(token_file_name).rglob(search_type):
+                        with open(path, "r", encoding="utf-8") as f:
+                            tokens += f.read()
+
+
         else:
-            print()
-            print("Invalid Option.")
-            fast_exit()
+            fast_exit("Invalid Option.")
 
         tokens_parsed = []
         for regex in (r"[\w-]{24}\.[\w-]{6}\.[\w-]{27}", r"mfa\.[\w-]{84}"):
@@ -75,15 +83,12 @@ class Checker:
         try:
             res = requests.post(self.url, json={"action": "checker", "data": self.tokens_parsed})
             if res.status_code != 200:
-                print("Status code is not 200. Something wrong with tokens...")
-                fast_exit()
+                fast_exit("Status code is not 200. Something wrong with tokens...")
             elif res.status_code == 429:
-                print("Too many tokens check, try after min!...")
-                fast_exit()
+                fast_exit("Too many tokens check, try after min!...")
             self.res = res.json()
         except:
-            print("An error occurred while trying to send the file to the server.")
-            fast_exit()
+            fast_exit("An error occurred while trying to send the file to the server.")
 
     def save_res(self):
         for token_type in self.res["tokensInfo"].keys():
@@ -95,9 +100,7 @@ class Checker:
         with open('json_data.json', 'w', encoding='utf-8') as f:
             json.dump(self.res, f, indent=4)
 
-        print()
-        print(f"Tokens saved!")
-        fast_exit()
+        fast_exit("Tokens saved!")
 
 
 if __name__ == "__main__":

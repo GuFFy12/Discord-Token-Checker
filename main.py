@@ -78,7 +78,8 @@ class Checker:
         print(f"Send tokens... Verification of 1000 tokens can take about 8 minutes.")
 
         try:
-            res = requests.post(self.url, timeout=600, json={"action": "checker", "data": self.tokens_parsed})
+            res = requests.post(self.url, timeout=60000, json={"action": "checker", "data": self.tokens_parsed})
+
             if res.status_code != 200:
                 fast_exit("Status code is not 200. Something wrong with tokens...")
             elif res.status_code == 429:

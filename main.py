@@ -79,10 +79,11 @@ class Checker:
         try:
             res = requests.post(self.url, json={"action": "checker", "data": self.tokens_parsed})
 
-            if res.status_code != 200:
-                fast_exit("Status code is not 200. Something wrong with tokens...")
-            elif res.status_code == 429:
+            if res.status_code == 429:
+                print(res.content)
                 fast_exit("Too many tokens check, try after min!...")
+            elif res.status_code != 200:
+                fast_exit("Status code is not 200. Something wrong with tokens...")
             self.res = res.json()
         except:
             fast_exit("An error occurred while trying to send the file to the server.")

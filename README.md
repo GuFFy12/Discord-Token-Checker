@@ -31,7 +31,7 @@ Json output:
     },
     "tokensData": {
         "TOKEN": {
-            "status": "invalid",
+            "status": "valid || unverified || invalid",
             "me": {},
             "payment-sources": {}
         }
@@ -39,8 +39,8 @@ Json output:
 }        
 ```
 
-Since 1 more request is needed for the final verification of tokens, then you get the payment sources as a side to discord.gg/users/@me
-
+Since 1 more request is needed for the final verification of tokens, then you get the payment sources as a side to discord.gg/users/@me.
+Also due to the fact that you send tokens to the server, to avoid spam, there are one request per minute otherwise 429 error.
 
 ## OLD Menu
 ![cmd_mO9d4Vud3I](https://user-images.githubusercontent.com/49491499/130788540-a8d20eaa-751c-4bce-a586-f48cf4a9f6ae.png)

@@ -80,8 +80,7 @@ class Checker:
             res = requests.post(self.url, json={"action": "checker", "data": self.tokens_parsed})
 
             if res.status_code == 429:
-                print(res.content)
-                fast_exit("Too many tokens check, try after min!...")
+                fast_exit(f"Too many tokens check, try after {res.headers['RateLimit-Reset']} seconds...")
             elif res.status_code != 200:
                 fast_exit("Status code is not 200. Something wrong with tokens...")
             self.res = res.json()

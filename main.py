@@ -4,6 +4,7 @@ import re
 from pathlib import Path
 from sys import exit
 
+import jwt
 import requests
 from colorama import Fore
 
@@ -24,7 +25,7 @@ def fast_exit(error):
 class Checker:
     def __init__(self):
         self.url = "https://lililil.xyz/checker"
-        self.tokens_parsed = ""
+        self.tokens_parsed = []
         self.res = {}
 
     def main(self):
@@ -65,17 +66,23 @@ class Checker:
         else:
             fast_exit("Invalid Option.")
 
-        tokens_parsed = []
+        pre_parsed = []
         for regex in (r"[\w-]{24}\.[\w-]{6}\.[\w-]{27}", r"mfa\.[\w-]{84}"):
             for token in re.findall(regex, tokens):
-                tokens_parsed.append(token)
+                pre_parsed.append(token)
+        pre_parsed = list(dict.fromkeys(pre_parsed))
 
-        self.tokens_parsed = list(dict.fromkeys(tokens_parsed))
+        for token in pre_parsed:
+            try:
+                jwt.decode(token, options={"verify_signature": False})
+            except Exception as e:
+                if str(e) == "Invalid header string: must be a json object":
+                    self.tokens_parsed.append(token)
 
         if len(self.tokens_parsed) > 2000:
             fast_exit(
                 "The current API limit is 2000 tokens. Please sort the tokens by removing the cherished invalid tokens."
-                f' Amount of sorted tokens - {len(self.tokens_parsed)}'
+                f" Amount of sorted tokens - {len(self.tokens_parsed)}"
             )
 
     def send_tokens(self):
@@ -88,7 +95,7 @@ class Checker:
             if res.status_code == 429:
                 fast_exit(f"Too many tokens check, try after {res.headers['RateLimit-Reset']} seconds...")
             elif res.status_code != 200:
-                fast_exit("Status code is not 200. Something wrong with tokens...")
+                fast_exit(f"Status code is not 200. {res.json()}")
 
             self.res = res.json()
         except:
@@ -101,7 +108,7 @@ class Checker:
                     for item in self.res["tokensInfo"][token_type]:
                         f.write("%s\n" % item)
 
-        with open('json_data.json', 'w') as f:
+        with open("json_data.json", "w") as f:
             json.dump(self.res, f, indent=4)
 
         fast_exit("Tokens saved!")

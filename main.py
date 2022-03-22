@@ -72,6 +72,12 @@ class Checker:
 
         self.tokens_parsed = list(dict.fromkeys(tokens_parsed))
 
+        if len(self.tokens_parsed) > 2000:
+            fast_exit(
+                "The current API limit is 2000 tokens. Please sort the tokens by removing the cherished invalid tokens."
+                f' Amount of sorted tokens - {len(self.tokens_parsed)}'
+            )
+
     def send_tokens(self):
         print()
         print(f"Send tokens... Verification of 1000 tokens can take about 8 minutes.")
@@ -83,6 +89,7 @@ class Checker:
                 fast_exit(f"Too many tokens check, try after {res.headers['RateLimit-Reset']} seconds...")
             elif res.status_code != 200:
                 fast_exit("Status code is not 200. Something wrong with tokens...")
+
             self.res = res.json()
         except:
             fast_exit("An error occurred while trying to send the file to the server.")

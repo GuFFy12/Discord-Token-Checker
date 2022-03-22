@@ -88,7 +88,7 @@ class Checker:
 
     def send_tokens(self):
         print()
-        print(f"Send tokens... Verification of 1000 tokens can take about 8 minutes.")
+        print(f"Send tokens... Verification of {len(self.tokens_parsed)} can take some time. 2000 tokens - 15 min.")
 
         try:
             res = requests.post(self.url, json={"action": "checker", "data": self.tokens_parsed})

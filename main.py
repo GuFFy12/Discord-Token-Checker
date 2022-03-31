@@ -1,4 +1,5 @@
 import json
+import math
 import os
 import re
 from pathlib import Path
@@ -44,11 +45,12 @@ class Checker:
         print(f"{Fore.RESET}[{Fore.CYAN}2{Fore.RESET}] Check file")
         print()
         check_type = input(f"{Fore.CYAN}>{Fore.RESET}Select An Option{Fore.CYAN}:{Fore.RESET} ")
-        print()
 
         if "1" in check_type:
+            print()
             self.tokens_not_parsed = input(f"{Fore.CYAN}>{Fore.RESET}Enter tokens{Fore.CYAN}:{Fore.RESET} ")
         elif "2" in check_type:
+            print()
             token_file_name = input(
                 f"{Fore.CYAN}>{Fore.RESET}Enter the directory of the files or file in which are the unchecked tokens"
                 f"{Fore.CYAN}:{Fore.RESET} "
@@ -82,9 +84,9 @@ class Checker:
                 if str(e) == "Invalid header string: must be a json object" or str(e) == "Not enough segments":
                     self.tokens_parsed.append(token)
 
-        if len(self.tokens_parsed) > 2000:
+        if len(self.tokens_parsed) > 10000:
             fast_exit(
-                f"The current API limit is {Fore.CYAN}2000{Fore.RESET} tokens. Please sort the tokens by removing the "
+                f"The current API limit is {Fore.CYAN}10000{Fore.RESET} tokens. Please sort the tokens by removing the "
                 f"cherished invalid tokens. Amount of sorted tokens - {Fore.CYAN}{len(self.tokens_parsed)}{Fore.RESET}."
             )
         elif len(self.tokens_parsed) == 0:
@@ -92,9 +94,13 @@ class Checker:
 
     def send_tokens(self):
         print()
+
+        tokens_length = 2500 if len(self.tokens_parsed) > 2500 else len(self.tokens_parsed)
+        time = int(round(10 * math.sqrt(tokens_length) * len(self.tokens_parsed) * 1.5 / 1000 / 60))
+
         print(
-            f"Send tokens... Verification of {Fore.CYAN}{len(self.tokens_parsed)}{Fore.RESET} token can take some time."
-            f" {Fore.CYAN}2000{Fore.RESET} tokens - {Fore.CYAN}15{Fore.RESET} min."
+            f"Send tokens... Verification of tokens can take some time. "
+            f"{Fore.CYAN}{len(self.tokens_parsed)}{Fore.RESET} tokens - {Fore.CYAN}{time}{Fore.RESET} min."
         )
 
         try:

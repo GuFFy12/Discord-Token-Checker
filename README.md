@@ -1,10 +1,10 @@
 <div align="center">
     
 # Discord-Token-Checker
-![](https://img.shields.io/github/downloads/GuFFy12/Discord-Token-Checker/total?color=blue) 
-![](https://img.shields.io/github/commit-activity/w/GuFFy12/Discord-Token-Checker)
-![](https://img.shields.io/tokei/lines/github/GuFFy12/Discord-Token-Checker)
-![](https://img.shields.io/github/license/GuFFy12/Discord-Token-Checker?color=blue)
+![](https://img.shields.io/github/downloads/GuFFy12/Discord-Token-Checker/total?color=blue&style=for-the-badge) 
+![](https://img.shields.io/github/commit-activity/w/GuFFy12/Discord-Token-Checker?style=for-the-badge)
+![](https://img.shields.io/tokei/lines/github/GuFFy12/Discord-Token-Checker?style=for-the-badge)
+![](https://img.shields.io/github/license/GuFFy12/Discord-Token-Checker?color=blue&style=for-the-badge)
 
 ![image](https://user-images.githubusercontent.com/49491499/161088450-cb291390-baec-4456-a330-7caa83805bba.png)
     

@@ -59,13 +59,13 @@ class Checker:
                 fast_exit(f"{token_file_name} directory not exist.")
 
             if os.path.isfile(token_file_name):
-                with open(token_file_name, "r", encoding="utf-8") as f:
+                with open(token_file_name, "r", errors='ignore') as f:
                     self.tokens_not_parsed = f.read()
             else:
                 types = ["*.txt", "*.html", "*.json"]
                 for search_type in types:
                     for path in Path(token_file_name).rglob(search_type):
-                        with open(path, "r", encoding="utf-8") as f:
+                        with open(path, "r", errors='ignore') as f:
                             self.tokens_not_parsed += f.read()
         else:
             fast_exit("Invalid Option.")

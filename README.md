@@ -9,7 +9,20 @@
 Telegram Bot with same functionality: [@Discord_Token_Checker_bot](https://t.me/Discord_Token_Checker_bot)
 
 ![image](https://user-images.githubusercontent.com/49491499/161088450-cb291390-baec-4456-a330-7caa83805bba.png)
-    
+
+## QUESTIONS
+</div>
+
+1) Q: Why my tokens checked so long... in console writing wait 2 minutes, but i wait an hour and nothing!
+
+   A: Since you are sending tokens for verification, other tokens from other people can be checked on the server before you. If they have sent, say, 10,000 tokens, then you will have to wait a long time. I was thinking about how to fix this and I'm thinking of splitting large requests into parts in order to check other requests between them.
+
+2) Q: Why do I have 1000 tokens in the file, but the parser found only 580?
+
+   A: The code uses an advanced token parser. The fact is that ordinary parsers check only the token pattern, but it also needs to check headers. (More info: https://jwt.io/introduction)
+In short, there are tokens that were created by some kind of token generator. They contain a header. If you decrypt it (base64), then for natural discord tokens it represents json value, while for generated ones it will be different. Check it out for yourself: https://jwt.io/#debugger-io.
+<div align="center">   
+
 ## OUTPUT
 </div>
 Standart output with valid, invalid, etc txt files.

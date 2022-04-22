@@ -1,8 +1,8 @@
 import json
 import math
 import os
-import re
 import pathlib
+import re
 
 import jwt
 import requests
@@ -101,7 +101,8 @@ Telegram Bot with same functionality: {Fore.CYAN}https://t.me/Discord_Token_Chec
     def send_tokens(self):
         res = {"tokensInfo": {"valid": [], "nitro": [], "payment": [], "unverified": [], "invalid": [],
                               "parsedTokens": []}, "tokensData": {}}
-        parts = [self.tokens_parsed[d:d + self.tokens_part] for d in range(0, len(self.tokens_parsed), self.tokens_part)]
+        parts = [self.tokens_parsed[d:d + self.tokens_part] for d in
+                 range(0, len(self.tokens_parsed), self.tokens_part)]
 
         i = 1
         for tokens in parts:

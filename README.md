@@ -17,7 +17,11 @@ Telegram Bot with same functionality: [@Discord_Token_Checker_bot](https://t.me/
 
    A: There is a queue in the backend. Since you are sending tokens for verification, other tokens from other people can be checking on the server before you.
 
-2) Q: Why do I have 1000 tokens in the file, but the parser found only 580?
+2) Q: Why is the sum of valid + unverified + invalid tokens less than the sum of parsed tokens?
+
+   A: The checker records all id tokens. If the new token contains an id from the list of verified ones, it is removed. Don't worry if one token becomes invalid another token with the same id too.
+
+3) Q: Why do I have 1000 tokens in the file, but the parser found only 580?
 
    A: The code uses an advanced token parser. The fact is that ordinary parsers check only the token pattern, but it also needs to check headers. (More info: https://jwt.io/introduction)
 In short, there are tokens that were created by some kind of token generator. They contain a header. If you decrypt it (base64), then for natural discord tokens it represents json value, while for generated ones it will be different. Check it out for yourself: https://jwt.io/#debugger-io.

@@ -72,6 +72,7 @@ Telegram Bot with same functionality: {Fore.CYAN}https://t.me/Discord_Token_Chec
                                 self.parse_tokens(file.read())
                         except Exception as error:
                             print(error)
+                self.tokens_parsed = list(dict.fromkeys(self.tokens_parsed))
 
         else:
             fast_exit("Invalid Option.")
@@ -91,8 +92,6 @@ Telegram Bot with same functionality: {Fore.CYAN}https://t.me/Discord_Token_Chec
                     self.tokens_parsed.append(token)
 
     def send_tokens(self):
-        self.tokens_parsed = list(dict.fromkeys(self.tokens_parsed))
-
         if len(self.tokens_parsed) > self.max_tokens:
             fast_exit(
                 f"The current API limit is {Fore.CYAN}{self.max_tokens}{Fore.RESET} tokens. "

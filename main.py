@@ -25,9 +25,9 @@ def fast_exit(message):
 class Checker:
     def __init__(self):
         self.url = "https://lililil.xyz/checker"
+        self.file_types = [".txt", ".html", ".json"]
         self.max_tokens = 10000
         self.tokens_part = 1000
-        self.tokens_not_parsed = ""
         self.tokens_parsed = []
         self.res = {}
 
@@ -51,32 +51,35 @@ Telegram Bot with same functionality: {Fore.CYAN}https://t.me/Discord_Token_Chec
 
         if "1" in check_type:
             print()
-            self.tokens_not_parsed = input(f"{Fore.CYAN}>{Fore.RESET}Enter tokens{Fore.CYAN}:{Fore.RESET} ")
+            self.parse_tokens(input(f"{Fore.CYAN}>{Fore.RESET}Enter tokens{Fore.CYAN}:{Fore.RESET} "))
         elif "2" in check_type:
             print()
             token_file_name = input(
                 f"{Fore.CYAN}>{Fore.RESET}Enter the directory of the files or file in which are the unchecked tokens"
-                f"{Fore.CYAN}:{Fore.RESET} "
+                f" (supported types: txt, html, json){Fore.CYAN}:{Fore.RESET} "
             )
             if not os.path.exists(token_file_name):
                 fast_exit(f"{token_file_name} directory not exist.")
 
             if os.path.isfile(token_file_name):
-                with open(token_file_name, "r", errors="ignore") as f:
-                    self.tokens_not_parsed = f.read()
+                with open(token_file_name, "r", errors="ignore") as file:
+                    self.parse_tokens(file.read())
             else:
-                types = ["*.txt", "*.html", "*.json"]
-                for search_type in types:
-                    for path in pathlib.Path(token_file_name).rglob(search_type):
-                        with open(path, "r", errors="ignore") as f:
-                            self.tokens_not_parsed += f.read()
+                for path in pathlib.Path(token_file_name).rglob("*.*"):
+                    if path.suffix in self.file_types:
+                        try:
+                            with open(path, "r", errors="ignore") as file:
+                                self.parse_tokens(file.read())
+                        except Exception as error:
+                            print(error)
+
         else:
             fast_exit("Invalid Option.")
 
-    def parse_tokens(self):
+    def parse_tokens(self, text):
         pre_parsed = []
         for regex in (r"[\w-]{24}\.[\w-]{6}\.[\w-]{27}", r"mfa\.[\w-]{84}"):
-            for token in re.findall(regex, self.tokens_not_parsed):
+            for token in re.findall(regex, text):
                 pre_parsed.append(token)
         pre_parsed = list(dict.fromkeys(pre_parsed))
 
@@ -86,6 +89,9 @@ Telegram Bot with same functionality: {Fore.CYAN}https://t.me/Discord_Token_Chec
             except Exception as e:
                 if str(e) == "Invalid header string: must be a json object" or str(e) == "Not enough segments":
                     self.tokens_parsed.append(token)
+
+    def send_tokens(self):
+        self.tokens_parsed = list(dict.fromkeys(self.tokens_parsed))
 
         if len(self.tokens_parsed) > self.max_tokens:
             fast_exit(
@@ -98,7 +104,10 @@ Telegram Bot with same functionality: {Fore.CYAN}https://t.me/Discord_Token_Chec
         print()
         print(f"Found {Fore.CYAN}{len(self.tokens_parsed)}{Fore.RESET} tokens!")
 
-    def send_tokens(self):
+        print()
+        print("Have questions about the checker or notice an error in the output? "
+              "Read the readme in the github repository or ask a question in issues!")
+
         res = {"tokensInfo": {"valid": [], "nitro": [], "payment": [], "unverified": [], "invalid": [],
                               "parsedTokens": []}, "tokensData": {}}
         parts = [self.tokens_parsed[d:d + self.tokens_part] for d in
@@ -125,7 +134,7 @@ Telegram Bot with same functionality: {Fore.CYAN}https://t.me/Discord_Token_Chec
 
                 if req.status_code == 429:
                     fast_exit(
-                        f"Too many tokens check, try after "
+                        f"Too many tokens check requests, try after "
                         f"{Fore.CYAN}{req.headers['RateLimit-Reset']}{Fore.RESET} seconds..."
                     )
                 elif req.status_code != 200:
@@ -135,10 +144,10 @@ Telegram Bot with same functionality: {Fore.CYAN}https://t.me/Discord_Token_Chec
                     res["tokensInfo"][tokens_type] += req.json()["tokensInfo"][tokens_type]
                 res["tokensData"].update(req.json()["tokensData"])
             except Exception as e:
-                fast_exit(f"An error occurred while trying to send the file to the server. {str(e)}")
+                fast_exit(f"An error occurred while trying to send tokens to the server. {e.args[1]}")
 
             self.res = res
-            checker.save_res(i, len(parts))
+            self.save_res(i, len(parts))
             i += 1
 
         fast_exit("All tokens saved!")
@@ -152,8 +161,8 @@ Telegram Bot with same functionality: {Fore.CYAN}https://t.me/Discord_Token_Chec
                     for item in self.res["tokensInfo"][token_type]:
                         f.write("%s\n" % item)
 
-        with open("tokens_data.json", "w") as f:
-            json.dump(self.res, f, indent=4)
+        with open("tokens_data.json", "w") as file:
+            json.dump(self.res, file, indent=4)
 
         print(f"{Fore.CYAN}{i}{Fore.RESET}/{Fore.CYAN}{parts}{Fore.RESET} part of tokens saved!\nStats: {stats[:-2]}")
 
@@ -161,5 +170,4 @@ Telegram Bot with same functionality: {Fore.CYAN}https://t.me/Discord_Token_Chec
 if __name__ == "__main__":
     checker = Checker()
     checker.main()
-    checker.parse_tokens()
     checker.send_tokens()

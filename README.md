@@ -8,6 +8,8 @@
     
 Telegram Bot with same functionality: [@Discord_Token_Checker_bot](https://t.me/Discord_Token_Checker_bot)
 
+Discord Token Checker Site: [Discord-Token-Checker](https://discord-token-checker.github.io/discord-token-checker/)
+    
 ![image](https://user-images.githubusercontent.com/49491499/164704463-b54eca93-a6b7-4ca5-9d9d-c581e58e5edd.png)
 
 ## QUESTIONS

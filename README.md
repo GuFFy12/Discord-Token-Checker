@@ -6,11 +6,11 @@
 ![](https://img.shields.io/tokei/lines/github/GuFFy12/Discord-Token-Checker?style=for-the-badge)
 ![](https://img.shields.io/github/license/GuFFy12/Discord-Token-Checker?color=blue&style=for-the-badge)
     
+<img width="892" src="https://user-images.githubusercontent.com/49491499/170839591-6070cb63-1e1c-488d-8172-12a6978ab644.png">
+    
 Discord Token Checker Telegram Bot: [@Discord_Token_Checker_bot](https://t.me/Discord_Token_Checker_bot)
 
 Discord Token Checker Site: [Discord-Token-Checker](https://lililil.xyz)
-    
-![image](https://user-images.githubusercontent.com/49491499/170838401-be1b8e2c-eb6f-4a0e-9c19-2a6d9fb252d3.png)
 
 ## INSTALL    
 </div>
@@ -31,8 +31,13 @@ python main.py
 2) This program parses token with complex algorithms (check QUESTIONS for more info).
 3) Then your tokens, check for validation using parallel request with highest speed. 
 4) In the output you get text files with tokens and jsonData file which contain all data tokens.
-
 <div align="center">
+
+## VIDEOS
+
+[CLICK <br />![](https://user-images.githubusercontent.com/49491499/170839662-cf4f9872-3ece-4892-85b6-e18e84a28b0b.png)](https://youtu.be/dU0foZX8v5k)
+
+[CLICK <br />![](https://user-images.githubusercontent.com/49491499/170839142-f1af441e-a63d-4ed5-abf2-023d687b0239.jpg)](https://youtu.be/mY648L5FqeA)
 
 ## QUESTIONS
 </div>

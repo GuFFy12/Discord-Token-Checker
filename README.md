@@ -6,11 +6,33 @@
 ![](https://img.shields.io/tokei/lines/github/GuFFy12/Discord-Token-Checker?style=for-the-badge)
 ![](https://img.shields.io/github/license/GuFFy12/Discord-Token-Checker?color=blue&style=for-the-badge)
     
-Telegram Bot with same functionality: [@Discord_Token_Checker_bot](https://t.me/Discord_Token_Checker_bot)
+Discord Token Checker Telegram Bot: [@Discord_Token_Checker_bot](https://t.me/Discord_Token_Checker_bot)
 
-Discord Token Checker Site: [Discord-Token-Checker](https://discord-token-checker.github.io/discord-token-checker/)
+Discord Token Checker Site: [Discord-Token-Checker](https://lililil.xyz)
     
-![image](https://user-images.githubusercontent.com/49491499/164704463-b54eca93-a6b7-4ca5-9d9d-c581e58e5edd.png)
+![image](https://user-images.githubusercontent.com/49491499/170838401-be1b8e2c-eb6f-4a0e-9c19-2a6d9fb252d3.png)
+
+## INSTALL    
+</div>
+
+```
+pip3 install -r requirements.txt
+```
+
+```
+python main.py
+```
+<div align="center">
+
+## USAGE
+</div>
+
+1) Enter token. Accept: input text, any file (accept unparsed logs), folder (recursive scan files with tokens).
+2) This program parses token with complex algorithms (check QUESTIONS for more info).
+3) Then your tokens, check for validation using parallel request with highest speed. 
+4) In the output you get text files with tokens and jsonData file which contain all data tokens.
+
+<div align="center">
 
 ## QUESTIONS
 </div>

@@ -1,5 +1,4 @@
 import json
-import math
 import os
 import pathlib
 import re
@@ -24,15 +23,24 @@ def fast_exit(message):
 
 class Checker:
     def __init__(self):
+        cls()
+
         self.url = "https://lililil.xyz/checker"
         self.file_types = [".txt", ".html", ".json"]
-        self.max_tokens = 10000
-        self.tokens_part = 1000
+
+        self.version = "3.5"
+        try:
+            self.param = requests.get(self.url).json()
+            if self.param["latest_version"] != self.version:
+                print(f"New version {Fore.CYAN}{self.param['latest_version']}{Fore.RESET} available! Download: "
+                      f"{Fore.CYAN}https://github.com/GuFFy12/Discord-Token-Checker/releases{Fore.RESET}")
+        except Exception as e:
+            fast_exit(f"An error occurred while trying connect to the server. {e.__doc__}")
+
         self.tokens_parsed = []
         self.res = {}
 
     def main(self):
-        cls()
         print(fr"""
    ___  _                     __  ______     __              _______           __                  ___ 
   / _ \(_)__ _______  _______/ / /_  __/__  / /_____ ___    / ___/ /  ___ ____/ /_____ ____  _  __|_  |
@@ -40,8 +48,8 @@ class Checker:
 /____/_/___/\__/\___/_/  \_,_/   /_/  \___/_/\_\\__/_//_/  \___/_//_/\__/\__/_/\_\\__/_/    |___/____/ 
                                                                                            {Fore.CYAN}by GuFFy_OwO
 {Fore.RESET} 
-
 Telegram Bot with same functionality: {Fore.CYAN}https://t.me/Discord_Token_Checker_bot{Fore.RESET}
+Site with table and excel output: {Fore.CYAN}https://lililil.xyz{Fore.RESET}
 """)
 
         print(f"{Fore.RESET}[{Fore.CYAN}1{Fore.RESET}] Enter token")
@@ -73,9 +81,10 @@ Telegram Bot with same functionality: {Fore.CYAN}https://t.me/Discord_Token_Chec
                         except Exception as error:
                             print(error)
                 self.tokens_parsed = list(dict.fromkeys(self.tokens_parsed))
-
         else:
             fast_exit("Invalid Option.")
+
+        self.send_tokens()
 
     def parse_tokens(self, text):
         pre_parsed = []
@@ -92,9 +101,9 @@ Telegram Bot with same functionality: {Fore.CYAN}https://t.me/Discord_Token_Chec
                     self.tokens_parsed.append(token)
 
     def send_tokens(self):
-        if len(self.tokens_parsed) > self.max_tokens:
+        if len(self.tokens_parsed) > self.param["max_tokens"]:
             fast_exit(
-                f"The current API limit is {Fore.CYAN}{self.max_tokens}{Fore.RESET} tokens. "
+                f"The current API limit is {Fore.CYAN}{self.param['max_tokens']}{Fore.RESET} tokens. "
                 f"Amount of sorted tokens - {Fore.CYAN}{len(self.tokens_parsed)}{Fore.RESET}."
             )
         elif len(self.tokens_parsed) == 0:
@@ -109,23 +118,17 @@ Telegram Bot with same functionality: {Fore.CYAN}https://t.me/Discord_Token_Chec
 
         res = {"tokensInfo": {"valid": [], "nitro": [], "payment": [], "unverified": [], "invalid": [],
                               "parsedTokens": []}, "tokensData": {}}
-        parts = [self.tokens_parsed[d:d + self.tokens_part] for d in
-                 range(0, len(self.tokens_parsed), self.tokens_part)]
+        parts = [self.tokens_parsed[d:d + self.param["tokens_part"]] for d in
+                 range(0, len(self.tokens_parsed), self.param["tokens_part"])]
 
         i = 1
         for tokens in parts:
-            if len(tokens) < 100:
-                ms = len(tokens) * 50
-            else:
-                ms = (len(tokens) // self.tokens_part * self.tokens_part * 5 * math.sqrt(
-                    len(tokens) // self.tokens_part * self.tokens_part) +
-                      len(tokens) % self.tokens_part * 5 * math.sqrt(len(tokens) % self.tokens_part))
-            time = int(round(ms * 1.5 / 1000 / 60))
+            tokens_time = self.param["tokens_time"] * len(tokens) // 1000
 
             print()
             print(
                 f"Sending {Fore.CYAN}{i}{Fore.RESET}/{Fore.CYAN}{len(parts)}{Fore.RESET} part of tokens... "
-                f"{Fore.CYAN}{len(tokens)}{Fore.RESET} tokens - {Fore.CYAN}{time}{Fore.RESET} min."
+                f"{Fore.CYAN}{len(tokens)}{Fore.RESET} tokens - {Fore.CYAN}{tokens_time}{Fore.RESET} sec."
             )
 
             try:
@@ -143,7 +146,7 @@ Telegram Bot with same functionality: {Fore.CYAN}https://t.me/Discord_Token_Chec
                     res["tokensInfo"][tokens_type] += req.json()["tokensInfo"][tokens_type]
                 res["tokensData"].update(req.json()["tokensData"])
             except Exception as e:
-                fast_exit(f"An error occurred while trying to send tokens to the server. {e.args[1]}")
+                fast_exit(f"An error occurred while trying to send tokens to the server. {e.__doc__}")
 
             self.res = res
             self.save_res(i, len(parts))
@@ -169,4 +172,3 @@ Telegram Bot with same functionality: {Fore.CYAN}https://t.me/Discord_Token_Chec
 if __name__ == "__main__":
     checker = Checker()
     checker.main()
-    checker.send_tokens()

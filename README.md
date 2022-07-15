@@ -75,7 +75,7 @@ Json output:
         "TOKEN": {
             "status": "valid || unverified || invalid",
             "me": {},
-            "payment-sources": {}
+            "payment_sources": {}
         }
     }
 }        

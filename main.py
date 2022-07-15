@@ -28,7 +28,7 @@ class Checker:
         self.url = "https://lililil.xyz/checker"
         self.file_types = [".txt", ".html", ".json"]
 
-        self.version = "3.5"
+        self.version = "3.5.1"
         try:
             self.param = requests.get(self.url).json()
             if self.param["latest_version"] != self.version:

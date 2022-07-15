@@ -88,7 +88,7 @@ Site with table and excel output: {Fore.CYAN}https://lililil.xyz{Fore.RESET}
 
     def parse_tokens(self, text):
         pre_parsed = []
-        for regex in (r"[\w-]{24}\.[\w-]{6}\.[\w-]{27}", r"mfa\.[\w-]{84}"):
+        for regex in (r"[\w-]{24}\.[\w-]{6}\.[\w-]{38}", r"[\w-]{24}\.[\w-]{6}\.[\w-]{27}", r"mfa\.[\w-]{84}"):
             for token in re.findall(regex, text):
                 pre_parsed.append(token)
         pre_parsed = list(dict.fromkeys(pre_parsed))

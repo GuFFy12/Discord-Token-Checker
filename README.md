@@ -67,6 +67,7 @@ Json output:
         "valid": [],
         "nitro": [],
         "payment": [],
+        "phone": [],
         "unverified": [],
         "invalid": [],
         "parsedTokens": []

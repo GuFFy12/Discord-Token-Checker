@@ -30,7 +30,7 @@ python main.py
 1) Enter token. Accept: input text, any file (accept unparsed logs), folder (recursive scan files with tokens).
 2) This program parses token with complex algorithms (check QUESTIONS for more info).
 3) Then your tokens, check for validation using parallel request with highest speed. 
-4) In the output you get text files with tokens and jsonData file which contain all data tokens.
+4) In the output you get text files with tokens and json_data file which contain all tokens data .
 <div align="center">
 
 ## VIDEOS
@@ -42,9 +42,9 @@ python main.py
 ## QUESTIONS
 </div>
 
-1) Q: Why my tokens checked so long... in console writing wait 2 minutes, but i wait an hour and nothing!
+1) Q: Could there be bugs in the code?
 
-   A: There is a queue in the backend. Since you are sending tokens for verification, other tokens from other people can be checking on the server before you.
+   A: Absolutely not. All methods used in the checker have been tested 1000 times by me, and the results have been verified with other checkers, including synchronous ones.
 
 2) Q: Why is the sum of valid + unverified + invalid tokens less than the sum of parsed tokens?
 
@@ -68,13 +68,14 @@ Json output:
         "nitro": [],
         "payment": [],
         "phone": [],
+        "quarantine": [],
         "unverified": [],
         "invalid": [],
         "parsedTokens": []
     },
     "tokensData": {
         "TOKEN": {
-            "status": "valid || unverified || invalid",
+            "status": "valid || quarantine || unverified || invalid",
             "me": {},
             "payment_sources": {}
         }
@@ -83,8 +84,22 @@ Json output:
 ```
 <div align="center">
 
-## UPDATE
 </div>
+
+## Changelog 2
+
+After this amount of time, I'm ready to write a huge changelog for the project:
+1) Added proxies to the checker, which increased the speed by n-times (depends on how many proxies are active on the server). I had to try to integrate them into the already complex request code.
+2) Updated regexp for new tokens. Regarding this, a lot of settings have been moved to a backend to ensure stable operation of all versions. So, if anything, if the checker output is updated, you will also have it updated on the backend.
+3) Unfortunately, I did not manage to make a site with a token checker. While there is not enough experience. BUT I'M TRYING TO FIX IT! Well, the fact that the site with the beta token checker began to block Google as a fraudulent site also began to dismoral me. After writing Google, everything worked, but not for long. :sad-trombone:
+4) Added quarantine check! It's something between unverified and invalid. You cannot create new chats or join guilds from the token, but it remains to work. Is it worth checking the payments on such tokens? I think no.
+5) I had to discard such modules as nitroChecker, nitroPurchaser, info. They are hard to maintain code and I don't think they will be in demand.
+6) An early update of the telegram bot is possible! Follow the news!
+7) Fix api, now it looks not so clumsy.
+
+
+## Changelog 1
+
 Firstly, now the tokens data is processed on a remote server. This is due to the fact that I have been writing a telegram bot for checking tokens for a long time and I did not want to rewrite the backend for python.
 
 In this regard, the speed increased from 1 token per second to 40. I achieved this with the help of parallel requests and proxies, it was difficult to implement in python. Also, when I finish the nuker, it will probably be the fastest, since the 429 error handler with limit checking will be used.

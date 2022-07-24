@@ -68,14 +68,13 @@ Json output:
         "nitro": [],
         "payment": [],
         "phone": [],
-        "quarantine": [],
         "unverified": [],
         "invalid": [],
         "parsedTokens": []
     },
     "tokensData": {
         "TOKEN": {
-            "status": "valid || quarantine || unverified || invalid",
+            "status": "valid || unverified || invalid",
             "me": {},
             "payment_sources": {}
         }
@@ -92,10 +91,9 @@ After this amount of time, I'm ready to write a huge changelog for the project:
 1) Added proxies to the checker, which increased the speed by n-times (depends on how many proxies are active on the server). I had to try to integrate them into the already complex request code.
 2) Updated regexp for new tokens. Regarding this, a lot of settings have been moved to a backend to ensure stable operation of all versions. So, if anything, if the checker output is updated, you will also have it updated on the backend.
 3) Unfortunately, I did not manage to make a site with a token checker. While there is not enough experience. BUT I'M TRYING TO FIX IT! Well, the fact that the site with the beta token checker began to block Google as a fraudulent site also began to dismoral me. After writing Google, everything worked, but not for long. :sad-trombone:
-4) Added quarantine check! It's something between unverified and invalid. You cannot create new chats or join guilds from the token, but it remains to work. Is it worth checking the payments on such tokens? I think no.
-5) I had to discard such modules as nitroChecker, nitroPurchaser, info. They are hard to maintain code and I don't think they will be in demand.
-6) An early update of the telegram bot is possible! Follow the news!
-7) Fix api, now it looks not so clumsy.
+4) I had to discard such modules as nitroChecker, nitroPurchaser, info. They are hard to maintain code and I don't think they will be in demand.
+5) An early update of the telegram bot is possible! Follow the news!
+6) Fix api, now it looks not so clumsy.
 
 
 ## Changelog 1

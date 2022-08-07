@@ -1,9 +1,6 @@
 <div align="center">
     
-
-![image](https://user-images.githubusercontent.com/49491499/181288648-a6d396fd-9223-4ca2-915a-da0231186828.png)
-
-Closed due fixing this shit. I was hacked. Sorry.
+The project has been frozen and is currently being rewritten for react and nest js. I think to finish within ~1.5 months. Stay in touch!
 
 # Discord-Token-Checker
 ![](https://img.shields.io/github/downloads/GuFFy12/Discord-Token-Checker/total?color=blue&style=for-the-badge) 
